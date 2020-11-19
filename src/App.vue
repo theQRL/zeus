@@ -57,7 +57,7 @@ export default defineComponent({
     const appPages = [
       {
         title: 'Home',
-        url: '/folder/Home',
+        url: '/',
         iosIcon: homeOutline,
         mdIcon: homeSharp
       },
@@ -134,6 +134,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }

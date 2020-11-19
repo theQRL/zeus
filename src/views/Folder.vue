@@ -55,9 +55,6 @@ export default {
 </script>
 
 <style scoped>
-ion-menu-button {
-  color: var(--ion-color-primary);
-}
 
 #container {
   text-align: center;
