@@ -9,7 +9,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <img src="../img/ZEUS.svg">
+      <div class="ion-text-center">
+        <img src="../img/ZEUS.svg">
+      </div>
       <div class="ion-text-center">
         <img src="../img/zeus-logo.svg">
       </div>
@@ -29,7 +31,7 @@ import { IonButtons, IonRow, IonItem, IonRadioGroup, IonListHeader, IonButton, I
 // import { ref, computed, watch } from 'vue';
 
 export default {
-  name: 'New',
+  name: 'Home',
   components: {
     IonButtons,
     // IonButton,

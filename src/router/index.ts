@@ -3,8 +3,16 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path: '',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
     component: () => import ('../views/Home.vue')
+  },
+  {
+    path: '/explorer',
+    component: () => import ('../views/Explorer.vue')
   },
   {
     path: '/folder/:id',

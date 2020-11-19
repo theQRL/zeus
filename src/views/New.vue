@@ -99,8 +99,6 @@
 
 <script lang="js">
 import { IonButtons, IonRow, IonItem, IonRadioGroup, IonListHeader, IonButton, IonRadio, IonLabel, IonToggle, IonCol, IonGrid, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { useRoute } from 'vue-router';
-import { ref, computed, watch } from 'vue';
 
 export default {
   name: 'New',
@@ -139,5 +137,8 @@ export default {
 <style scoped>
 ion-menu-button {
   color: var(--ion-color-primary);
+}
+ion-content{
+    --background: #0b181e url('../img/dots.png') no-repeat bottom -250px right -400px;
 }
 </style>
