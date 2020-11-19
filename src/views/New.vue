@@ -2,10 +2,10 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-buttons>
+        <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>New QRL Wallet</ion-title>
+        <ion-title>New Wallet</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -135,3 +135,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+</style>
