@@ -57,13 +57,13 @@ export default defineComponent({
     const appPages = [
       {
         title: 'Home',
-        url: '/',
+        url: '/home',
         iosIcon: homeOutline,
         mdIcon: homeSharp
       },
       {
         title: 'Explore',
-        url: '/folder/Explore',
+        url: '/explorer',
         iosIcon: globeOutline,
         mdIcon: globeSharp
       },
