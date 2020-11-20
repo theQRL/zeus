@@ -9,19 +9,25 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <div class="ion-text-center">
-        <ion-item>
-          <ion-label position="stacked">Search</ion-label>
-          <ion-input v-model="query" autofocus="true" placeholder="address, txhash, block"></ion-input>
-        </ion-item>
-        <ion-button v-on:click="search">Search</ion-button>
-      </div>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-item>
+                <ion-label position="stacked">Search</ion-label>
+                <ion-input v-model="query" autofocus="true" placeholder="address, txhash, block"></ion-input>
+              </ion-item>
+              <ion-button v-on:click="search" class="mt-2">Search</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
 </ion-page>
 </template>
 
 <script lang="js">
-import { IonButtons, IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter } from 'vue-router';
 // import { ref, computed, watch } from 'vue';
 
@@ -30,7 +36,6 @@ const identifySearch = (str) => {
   if (adjusted.charAt(0) === 'q') {
     adjusted = `Q${adjusted.substr(1, adjusted.length - 1)}`
   }
-  console.log(adjusted)
   const type = { parameter: adjusted, type: 'Undetermined' }
   if (adjusted.length === 79 && adjusted.charAt(0) === 'Q') {
     type.type = 'Address'
@@ -48,8 +53,11 @@ const identifySearch = (str) => {
 }
 
 export default {
-  name: 'Home',
+  name: 'Explorer',
   components: {
+    IonGrid,
+    IonCol,
+    IonRow,
     IonButtons,
     IonButton,
     IonContent,
@@ -87,7 +95,7 @@ ion-menu-button {
 ion-content{
     --background: #0b181e url('../img/dots.png') no-repeat bottom -250px right -400px;
 }
-.pb-5 {
-  padding-bottom: 30px;
+.mt-2 {
+  margin-top: 20px !important;
 }
 </style>
