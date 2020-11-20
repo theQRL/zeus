@@ -70,22 +70,33 @@ export default {
     return { router };
   },
   beforeMount() {
-    const network = this.sharedState.network
-    if (network === 'offline') {
-      this.error = { message: 'Offline' }
-      return
-    }
-    axios
-      .post(`${API}/grpc/${network}/GetObject`, { query: this.id },
-      )
-      .then(response => (this.info = response))
-      .catch(error => (this.error = error))
+    this.apiCall()
   },
   methods: {
     explorer() {
       this.router.push('/explorer')
+    },
+    apiCall() {
+      const network = this.sharedState.network
+      if (network === 'offline') {
+        this.error = { message: 'Offline' }
+        return
+      }
+      axios
+        .post(`${API}/grpc/${network}/GetObject`, { query: this.id },
+        )
+        .then(response => (this.info = response))
+        .catch(error => (this.error = error))
     }
-  }
+  },
+  watch: {
+    'sharedState.network': async function (oldState, newState) {
+      console.log(`Network changed ${oldState} -> ${newState} -- refresh explorer view`);
+      this.info = null
+      this.error = null
+      this.apiCall()
+    }
+  },
 }
 </script>
 

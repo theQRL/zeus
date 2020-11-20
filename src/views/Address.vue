@@ -67,18 +67,7 @@ export default {
     }
   },
   beforeMount() {
-    const network = this.sharedState.network
-    if (network === 'offline') {
-      this.error = { message: 'Offline' }
-      return
-    }
-    console.log('Fetching from: ' + network)
-    axios
-    axios
-      .post(`${API}/grpc/${network}/GetOptimizedAddressState`, { address: this.id },
-      )
-      .then(response => (this.info = response))
-      .catch(error => (this.error = error))
+    this.apiCall()
   },
   setup() {
     const router = useRouter()
@@ -87,8 +76,30 @@ export default {
   methods: {
     explorer() {
       this.router.push('/explorer')
+    },
+    apiCall() {
+      const network = this.sharedState.network
+      if (network === 'offline') {
+        this.error = { message: 'Offline' }
+        return
+      }
+      console.log('Fetching from: ' + network)
+      axios
+      axios
+        .post(`${API}/grpc/${network}/GetOptimizedAddressState`, { address: this.id },
+        )
+        .then(response => (this.info = response))
+        .catch(error => (this.error = error))
     }
-  }
+  },
+  watch: {
+    'sharedState.network': async function (oldState, newState) {
+      console.log(`Network changed ${oldState} -> ${newState} -- refresh explorer view`);
+      this.info = null
+      this.error = null
+      this.apiCall()
+    }
+  },
 }
 </script>
 
