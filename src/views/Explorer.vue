@@ -36,7 +36,6 @@ const identifySearch = (str) => {
   if (adjusted.charAt(0) === 'q') {
     adjusted = `Q${adjusted.substr(1, adjusted.length - 1)}`
   }
-  console.log(adjusted)
   const type = { parameter: adjusted, type: 'Undetermined' }
   if (adjusted.length === 79 && adjusted.charAt(0) === 'Q') {
     type.type = 'Address'
@@ -54,7 +53,7 @@ const identifySearch = (str) => {
 }
 
 export default {
-  name: 'Home',
+  name: 'Explorer',
   components: {
     IonGrid,
     IonCol,

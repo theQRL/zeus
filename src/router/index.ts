@@ -15,6 +15,18 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/Explorer.vue')
   },
   {
+    path: '/a/:id',
+    component: () => import ('../views/Address.vue')
+  },
+  {
+    path: '/tx/:id',
+    component: () => import ('../views/Transaction.vue')
+  },
+  {
+    path: '/block/:id',
+    component: () => import ('../views/Block.vue')
+  },
+  {
     path: '/folder/:id',
     component: () => import ('../views/Folder.vue')
   },
