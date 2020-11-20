@@ -35,6 +35,8 @@ import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonSpinner, IonLabel, I
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import API from '../API'
+import state from '../store';
+
 // import { ref, computed, watch } from 'vue';
 
 export default {
@@ -58,14 +60,22 @@ export default {
   data() {
     const route = useRoute()
     return {
+      sharedState: state,
       id: route.params.id,
       info: null,
       error: null
     }
   },
   beforeMount() {
+    const network = this.sharedState.network
+    if (network === 'offline') {
+      this.error = { message: 'Offline' }
+      return
+    }
+    console.log('Fetching from: ' + network)
     axios
-      .post(`${API}/grpc/testnet/GetOptimizedAddressState`, { address: this.id },
+    axios
+      .post(`${API}/grpc/${network}/GetOptimizedAddressState`, { address: this.id },
       )
       .then(response => (this.info = response))
       .catch(error => (this.error = error))

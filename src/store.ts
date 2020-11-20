@@ -7,4 +7,5 @@ export default  {
   },
   network: 'offline',
   online: false,
+  changeNetwork: false
 };

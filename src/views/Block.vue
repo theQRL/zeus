@@ -71,11 +71,11 @@ export default {
   },
   beforeMount() {
     const network = this.sharedState.network
+    console.log('Fetching from: ' + network)
     if (network === 'offline') {
       this.error = { message: 'Offline' }
       return
     }
-    console.log('Fetching from: ' + network)
     axios
       .post(`${API}/grpc/${network}/GetObject`, { query: this.id },
       )
