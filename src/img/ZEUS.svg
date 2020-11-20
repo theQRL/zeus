@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="505px" height="174px" viewBox="0 0 505 174" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="507px" height="174px" viewBox="0 0 507 174" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>ZEUS</title>
     <defs>
-        <text id="text-1" font-family="SourceSansPro-Black, Source Sans Pro" font-size="172" font-weight="800" letter-spacing="20" fill="#FFFFFF">
-            <tspan x="13.136" y="133">ZEUS</tspan>
-        </text>
-        <filter x="-8.3%" y="-18.5%" width="120.8%" height="146.3%" filterUnits="objectBoundingBox" id="filter-2">
+        <path d="M102.2,133 L102.2,108.232 L56.104,108.232 L101.856,39.088 L101.856,21.2 L24.112,21.2 L24.112,45.968 L65.392,45.968 L19.64,115.112 L19.64,133 L102.2,133 Z M213.704,133 L213.704,108.232 L169.328,108.232 L169.328,88.28 L205.792,88.28 L205.792,63.512 L169.328,63.512 L169.328,45.968 L211.984,45.968 L211.984,21.2 L139.744,21.2 L139.744,133 L213.704,133 Z M301.128,135.064 C332.432,135.064 346.88,117.176 346.88,78.992 L346.88,21.2 L318.328,21.2 L318.328,82.432 C318.328,102.384 312.824,109.608 301.128,109.608 C289.432,109.608 284.272,102.384 284.272,82.432 L284.272,21.2 L254.688,21.2 L254.688,78.992 C254.688,117.176 269.824,135.064 301.128,135.064 Z M424.672,135.064 C452.536,135.064 468.36,118.208 468.36,99.288 C468.36,83.808 460.448,74.176 446.516,68.672 L432.928,63.34 C422.78,59.384 416.416,57.492 416.416,52.16 C416.416,47.172 420.888,44.592 428.112,44.592 C436.368,44.592 442.904,47.344 450.472,52.676 L465.264,34.1 C454.944,23.952 440.84,19.136 428.112,19.136 C403.688,19.136 386.488,34.788 386.488,53.88 C386.488,70.048 396.98,80.196 409.02,85.012 L422.952,90.86 C432.412,94.644 438.088,96.364 438.088,101.696 C438.088,106.684 434.304,109.608 425.36,109.608 C417.104,109.608 407.128,105.136 399.216,98.772 L382.36,119.068 C394.4,129.904 410.568,135.064 424.672,135.064 Z" id="path-1"></path>
+        <filter x="-8.9%" y="-34.5%" width="122.3%" height="186.3%" filterUnits="objectBoundingBox" id="filter-2">
             <feOffset dx="10" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
             <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
             <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
         </filter>
     </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="1">
-        <g id="ZEUS" fill="#FFFFFF">
-            <use filter="url(#filter-2)" xlink:href="#text-1"></use>
-            <use xlink:href="#text-1"></use>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ZEUS" fill-rule="nonzero">
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+            <use fill="#FFFFFF" xlink:href="#path-1"></use>
         </g>
     </g>
 </svg>
