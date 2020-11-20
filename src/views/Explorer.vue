@@ -15,7 +15,7 @@
             <div class="ion-text-center">
               <ion-item>
                 <ion-label position="stacked">Search</ion-label>
-                <ion-input v-model="query" autofocus="true" placeholder="address, txhash, block"></ion-input>
+                <ion-input v-model="query" @keydown.enter="search" autofocus="true" placeholder="address, txhash, block" enterkeyhint="search"></ion-input>
               </ion-item>
               <ion-button v-on:click="search" class="mt-2">Search</ion-button>
             </div>
@@ -79,9 +79,13 @@ export default {
     const router = useRouter();
     return { router };
   },
+  beforeMount() {
+    this.query = ''
+  },
   methods: {
     search() {
       this.router.push(identifySearch(this.query).route)
+      this.query = ''
       return false
     }
   }
