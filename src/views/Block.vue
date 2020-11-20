@@ -14,7 +14,12 @@
           <ion-col>
             <div class="ion-text-center">
               Block:<br>
-                {{id}}
+                {{id}}<br>
+                <div v-if="error !== null">Error: {{error.message}}</div>
+                <div v-if="info !== null">
+                  {{info.data}}
+                </div>
+                <div v-if="info === null && error === null">Loading...</div>
             </div>
           </ion-col>
         </ion-row>
@@ -26,6 +31,8 @@
 <script lang="js">
 import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios';
+import API from '../API';
 // import { ref, computed, watch } from 'vue';
 
 export default {
@@ -49,12 +56,21 @@ export default {
   data() {
     const route = useRoute()
     return {
-      id: route.params.id
+      id: route.params.id,
+      info: null,
+      error: null
     }
   },
   setup() {
     const router = useRouter()
     return { router };
+  },
+  beforeMount() {
+    axios
+      .post(`${API}/grpc/testnet/GetObject`, { query: this.id },
+      )
+      .then(response => (this.info = response))
+      .catch(error => (this.error = error))
   },
   methods: {
   }

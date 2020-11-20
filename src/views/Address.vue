@@ -15,10 +15,11 @@
             <div class="ion-text-center">
               Address:<br>
                 {{id}}<br>
+                <div v-if="error !== null">Error: {{error.message}}</div>
                 <div v-if="info !== null">
                   Balance: {{info.data.state.balance}} Shor
                 </div>
-                <div v-if="info === null">Loading...</div>
+                <div v-if="info === null && error === null">Loading...</div>
             </div>
           </ion-col>
         </ion-row>
@@ -31,6 +32,7 @@
 import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import API from '../API'
 // import { ref, computed, watch } from 'vue';
 
 export default {
@@ -55,13 +57,16 @@ export default {
     const route = useRoute()
     return {
       id: route.params.id,
-      info: null
+      info: null,
+      error: null
     }
   },
   beforeMount() {
     axios
-      .post('https://zeus-proxy.automated.theqrl.org/grpc/GetOptimizedAddressState', { address: this.id })
+      .post(`${API}/grpc/testnet/GetOptimizedAddressState`, { address: this.id },
+      )
       .then(response => (this.info = response))
+      .catch(error => (this.error = error))
   },
   setup() {
     const router = useRouter()
