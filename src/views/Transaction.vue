@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>QRL Explorer</ion-title>
+        <ion-title @click="explorer">QRL Explorer</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -19,7 +19,9 @@
                 <div v-if="info !== null">
                   {{info.data}}
                 </div>
-                <div v-if="info === null && error === null">Loading...</div>
+                <div v-if="info === null && error === null">
+                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+                </div>
             </div>
           </ion-col>
         </ion-row>
@@ -29,7 +31,7 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonInput, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import API from '../API';
@@ -49,7 +51,7 @@ export default {
     IonPage,
     IonTitle,
     IonToolbar,
-    // IonInput,
+    IonSpinner,
     // IonLabel,
     // IonItem
   },
@@ -73,6 +75,9 @@ export default {
       .catch(error => (this.error = error))
   },
   methods: {
+    explorer() {
+      this.router.push('/explorer')
+    }
   }
 }
 </script>
@@ -83,5 +88,12 @@ ion-menu-button {
 }
 ion-content{
     --background: #0b181e url('../img/dots.png') no-repeat bottom -250px right -400px;
+}
+ion-title {
+  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+}
+ion-title:hover {
+  color: var(--ion-color-primary);
+  cursor: pointer;
 }
 </style>
