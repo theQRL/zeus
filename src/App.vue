@@ -3,10 +3,16 @@
     <IonSplitPane content-id="main-content">
       <ion-menu content-id="main-content" type="overlay">
         <ion-content>
+          <ion-button v-bind:fill="fill()">
+            <ion-select v-model="sharedState.network">
+              <ion-select-option value="offline">Offline</ion-select-option>
+              <ion-select-option value="testnet">Testnet</ion-select-option>
+              <ion-select-option value="mainnet">Mainnet</ion-select-option>
+            </ion-select>
+          </ion-button>
           <ion-list id="inbox-list">
-            <ion-list-header>ZEUS</ion-list-header>
-            <ion-note>The QRL Interface</ion-note>
-  
+            <!-- <ion-list-header>ZEUS</ion-list-header>
+            <ion-note>The QRL Interface</ion-note> -->
             <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
               <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
                 <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
@@ -14,7 +20,6 @@
               </ion-item>
             </ion-menu-toggle>
           </ion-list>
-  
           <ion-list id="labels-list">
             <ion-list-header>Labels</ion-list-header>
   
@@ -31,10 +36,11 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
+import { IonApp, IonSelectOption, IonButton, IonSelect, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { addOutline, addSharp, bookmarkOutline, bookmarkSharp, lockOpenOutline, lockOpenSharp, homeOutline, homeSharp, globeOutline, globeSharp, cogOutline, cogSharp, hardwareChipOutline, hardwareChipSharp, peopleOutline, peopleSharp } from 'ionicons/icons';
+import state from './store';
 
 export default defineComponent({
   name: 'App',
@@ -48,9 +54,25 @@ export default defineComponent({
     IonListHeader, 
     IonMenu, 
     IonMenuToggle, 
-    IonNote, 
+    // IonNote, 
     IonRouterOutlet, 
     IonSplitPane,
+    IonSelectOption,
+    IonSelect,
+    IonButton
+  },
+  data () {
+    return {
+      sharedState: state
+    }
+  },
+  methods: {
+    fill() {
+      if (this.sharedState.network !== 'offline') {
+        return 'solid';
+      }
+      return 'outline';
+    },
   },
   setup() {
     const selectedIndex = ref(0);
@@ -254,4 +276,5 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
 </style>

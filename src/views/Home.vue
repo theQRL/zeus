@@ -34,7 +34,7 @@ export default {
   name: 'Home',
   components: {
     IonButtons,
-    // IonButton,
+    IonButton,
     // IonRadio,
     IonContent,
     IonHeader,
