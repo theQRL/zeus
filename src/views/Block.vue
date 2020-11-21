@@ -31,7 +31,15 @@
             <div class="ion-text-center">
                 <div v-if="error !== null">Error: {{error.message}}</div>
                 <div v-if="info !== null">
+                  <!-- Block display START -->
                   {{info}}
+
+                  <p v-for="t in info.block_extended.extended_transactions" :key="t.timestamp_seconds">
+                    {{t.tx.transactionType}}<br>
+                    {{t.addr_from}}<br>
+                    {{dt(t.timestamp_seconds)}}
+                  </p>
+                  <!-- Block display END  -->
                 </div>
                 <div v-if="info === null && error === null">
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
@@ -49,6 +57,7 @@ import { IonGrid, IonCol, IonRow, IonIcon, IonButtons, IonButton, IonSpinner, Io
 import { useRouter, useRoute } from 'vue-router';
 import { chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API';
 import state from '../store';
@@ -123,6 +132,10 @@ export default {
       this.router.push(`/block/${blockNew}`)
       this.id = blockNew
       this.apiCall()
+    },
+    dt(s) {
+      const dt = DateTime.fromSeconds(parseInt(s))
+      return dt.toLocaleString(DateTime.DATETIME_FULL)
     }
   },
   watch: {
