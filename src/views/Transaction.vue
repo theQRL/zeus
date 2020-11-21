@@ -17,7 +17,7 @@
                 {{id}}<br>
                 <div v-if="error !== null">Error: {{error.message}}</div>
                 <div v-if="info !== null">
-                  {{info.data}}
+                  {{info}}
                 </div>
                 <div v-if="info === null && error === null">
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
@@ -34,6 +34,7 @@
 import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import helpers from '@theqrl/explorer-helpers'
 import API from '../API';
 import state from '../store';
 // import { ref, computed, watch } from 'vue';
@@ -85,7 +86,10 @@ export default {
       axios
         .post(`${API}/grpc/${network}/GetObject`, { query: this.id },
         )
-        .then(response => (this.info = response))
+        .then(response => {
+          console.log(helpers.tx(response.data))
+          this.info = helpers.tx(response.data)
+        })
         .catch(error => (this.error = error))
     }
   },
