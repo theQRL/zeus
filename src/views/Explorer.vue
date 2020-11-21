@@ -97,7 +97,13 @@ ion-menu-button {
   color: var(--ion-color-primary);
 }
 ion-content{
-    --background: #0b181e url('../img/dots.png') no-repeat bottom -250px right -400px;
+  --background: none;
+  background-image: url('../img/dots.png');
+  background-color: #0b181e;
+  background-repeat: no-repeat;
+  background-position: bottom -250px right -400px;
+  background-position-x: right -450px;
+  background-position-y: bottom 150px;
 }
 .mt-2 {
   margin-top: 20px !important;
