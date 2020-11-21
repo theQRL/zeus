@@ -9,12 +9,26 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+
+      <ion-toolbar color="secondary">
+        <ion-buttons slot="start">
+          <ion-button @click="goBack()">
+            <ion-icon slot="icon-only" :icon="chevronBackOutline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button @click="goForward()">
+            <ion-icon slot="icon-only" :icon="chevronForwardOutline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+
+        <ion-title class="ion-text-center no-hover">Block {{id}}</ion-title>
+      </ion-toolbar>
+
       <ion-grid>
         <ion-row>
           <ion-col>
             <div class="ion-text-center">
-              Block:<br>
-                {{id}}<br>
                 <div v-if="error !== null">Error: {{error.message}}</div>
                 <div v-if="info !== null">
                   {{info.data}}
@@ -31,8 +45,9 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonGrid, IonCol, IonRow, IonIcon, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
+import { chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 import axios from 'axios';
 import API from '../API';
 import state from '../store';
@@ -45,7 +60,7 @@ export default {
     IonCol,
     IonRow,
     IonButtons,
-    // IonButton,
+    IonButton,
     IonContent,
     IonHeader,
     IonMenuButton,
@@ -54,7 +69,7 @@ export default {
     IonToolbar,
     IonSpinner,
     // IonLabel,
-    // IonItem
+    IonIcon,
   },
   data() {
     const route = useRoute()
@@ -67,7 +82,7 @@ export default {
   },
   setup() {
     const router = useRouter()
-    return { router };
+    return { router, chevronBackOutline, chevronForwardOutline };
   },
   beforeMount() {
     this.apiCall()
@@ -88,6 +103,22 @@ export default {
       )
       .then(response => (this.info = response))
       .catch(error => (this.error = error))
+    },
+    goBack() {
+      const b = parseInt(this.id)
+      if (b > 1) {
+        const blockNew = (b - 1).toString()
+        this.router.push(`/block/${blockNew}`)
+        this.id = blockNew
+        this.apiCall()
+      }
+    },
+    goForward() {
+      const b = parseInt(this.id)
+      const blockNew = (b + 1).toString()
+      this.router.push(`/block/${blockNew}`)
+      this.id = blockNew
+      this.apiCall()
     }
   },
   watch: {
@@ -120,6 +151,10 @@ ion-title {
 ion-title:hover {
   color: var(--ion-color-primary);
   cursor: pointer;
+}
+.no-hover:hover {
+  color: unset;
+  cursor: unset;
 }
 
 </style>
