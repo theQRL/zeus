@@ -22,7 +22,7 @@
           </ion-button>
         </ion-buttons>
 
-        <ion-title class="ion-text-center no-hover">Block {{id}}</ion-title>
+        <ion-title class="ion-text-center no-hover">Block {{id}} <ion-icon id="verified" v-if="!(this.error)" :icon="checkmarkCircleOutline"></ion-icon></ion-title>
       </ion-toolbar>
 
       <ion-grid>
@@ -33,29 +33,29 @@
                 <div v-if="info !== null">
                   <!-- Block display START -->
                   <!-- {{info}} -->
-                  <p>Found <ion-icon :icon="checkmarkCircleOutline"></ion-icon></p>
+                  <p>{{dt(info.block_extended.header.timestamp_seconds)}}</p>
                   <ion-list>
                     <ion-list-header color="secondary">
                       TRANSACTIONS
                     </ion-list-header>
 
                     <ion-item-group>
-                      <ion-item-divider>
+                      <ion-item-divider v-if="this.coinbase.length > 0">
                         <ion-label>COINBASE</ion-label>
                       </ion-item-divider>
 
                       <ion-item lines="none" v-for="t in coinbase" :key="t.timestamp_seconds">
-                        <ion-label>{{t.tx.coinbase.addr_to}}</ion-label>
-                        <ion-note slot="end" color="primary">{{(t.tx.coinbase.amount / 10e8 )}} Quanta</ion-note>
+                        <ion-label class="addr" @click="this.router.push(`/a/${t.tx.coinbase.addr_to}`)">{{t.tx.coinbase.addr_to}}</ion-label>
+                        <ion-note slot="end" color="secondary">{{(t.tx.coinbase.amount / 10e8 )}} Quanta</ion-note>
                       </ion-item>
 
-                      <ion-item-divider>
+                      <ion-item-divider v-if="this.tx.length > 0">
                         <ion-label>TRANSFERS</ion-label>
                       </ion-item-divider>
 
                       <ion-item lines="none" v-for="t in tx" :key="t.timestamp_seconds">
-                        <ion-label>{{t.tx.transaction_hash}}</ion-label>
-                        <ion-note slot="end" color="primary">{{(t.tx.transfer.total / 10e8 )}} Quanta</ion-note>
+                        <ion-label class="addr" @click="this.router.push(`/tx/${t.tx.transaction_hash}`)">{{t.tx.transaction_hash}}</ion-label>
+                        <ion-note slot="end" color="secondary">{{(t.tx.transfer.total / 10e8 )}} Quanta</ion-note>
                       </ion-item>
 <!--
                       <ion-item-divider>
@@ -239,9 +239,20 @@ ion-title:hover {
   color: var(--ion-color-primary);
   cursor: pointer;
 }
+.addr {
+  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  cursor: pointer;
+}
+.addr:hover {
+  color: var(--ion-color-primary);
+}
 .no-hover:hover {
   color: unset;
   cursor: unset;
 }
-
+#verified {
+  margin-top: 2px;
+  position: absolute;
+  margin-left: 4px;
+}
 </style>
