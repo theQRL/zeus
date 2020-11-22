@@ -9,10 +9,136 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-toolbar color="primary">
+        <ion-title class="ion-text-center no-hover">
+          {{ id }}
+          <ion-icon
+            id="verified"
+            v-if="!this.error && this.confirmed"
+            :icon="checkmarkCircleOutline"
+          ></ion-icon>
+        </ion-title>
+      </ion-toolbar>
       <ion-grid>
         <ion-row>
           <ion-col>
             <div class="ion-text-center">
+              <div v-if="error !== null">Error: {{ error.message }}</div>
+              <div v-if="info !== null">
+                <p>{{ dt(info.transaction.timestamp_seconds) }}</p>
+                
+                <!-- TRANSFER start -->
+                <ion-list
+                  v-if="info.transaction.tx.transactionType === 'transfer'"
+                >
+                  <ion-list-header color="secondary">
+                    TRANSFER
+                  </ion-list-header>
+                  <ion-item-divider>
+                    <ion-label>FROM</ion-label>
+                  </ion-item-divider>
+                  <ion-item lines="none">
+                    <ion-label
+                      class="addr"
+                      @click="
+                        this.router.push(`/a/${info.transaction.addr_from}`)
+                      "
+                      >{{ info.transaction.addr_from }}</ion-label
+                    >
+                  </ion-item>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>TO</ion-label>
+                    </ion-item-divider>
+                    <ion-item
+                      v-for="output in outputs"
+                      v-bind:key="output.addrTo"
+                      lines="none"
+                    >
+                      <ion-label
+                        class="addr"
+                        @click="this.router.push(`/a/${output.addrTo}`)"
+                        >{{ output.addrTo }}</ion-label
+                      >
+                      <ion-note slot="end" color="secondary"
+                        >{{ output.amount / 10e8 }} Quanta</ion-note
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>TOTAL TRANSFERRED</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        >{{ info.transaction.total / 10e8 }} Quanta</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>BLOCK</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/block/${info.transaction.header.block_number}`)
+                        "
+                        >{{ info.transaction.header.block_number }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                </ion-list>
+                <!-- TRANSFER end -->
+
+                <!-- COINBASE start -->
+                <ion-list
+                  v-if="info.transaction.tx.transactionType === 'coinbase'"
+                >
+                  <ion-list-header color="secondary">
+                    COINBASE
+                  </ion-list-header>
+                  <ion-item-divider>
+                    <ion-label>TO</ion-label>
+                  </ion-item-divider>
+                  <ion-item lines="none">
+                    <ion-label
+                      class="addr"
+                      @click="
+                        this.router.push(`/a/${info.transaction.tx.coinbase.addr_to}`)
+                      "
+                      >{{ info.transaction.tx.coinbase.addr_to }}</ion-label
+                    >
+                  </ion-item>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>BLOCK REWARD</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        >{{ info.transaction.tx.coinbase.amount / 10e8 }} Quanta</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>BLOCK</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/block/${info.transaction.header.block_number}`)
+                        "
+                        >{{ info.transaction.header.block_number }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                </ion-list>
+                <!-- COINBASE end -->
+
+                <!-- <div class="ion-text-center">
               Transaction:<br>
                 {{id}}<br>
                 <div v-if="error !== null">Error: {{error.message}}</div>
@@ -22,18 +148,29 @@
                 <div v-if="info === null && error === null">
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
                 </div>
+            </div> -->
+              </div>
+
+              <div v-if="info === null && error === null">
+                <ion-spinner
+                  class="ion-text-center"
+                  color="secondary"
+                ></ion-spinner>
+              </div>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-content>
-</ion-page>
+  </ion-page>
 </template>
 
 <script lang="js">
-import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonGrid, IonCol, IonRow, IonButtons, IonIcon, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonNote, IonList, IonItemGroup, IonItemDivider, IonListHeader, } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
+import { checkmarkCircleOutline } from 'ionicons/icons';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API';
 import state from '../store';
@@ -46,6 +183,11 @@ export default {
     IonCol,
     IonRow,
     IonButtons,
+    IonNote,
+    IonList,
+    IonItemGroup,
+    IonItemDivider,
+    IonListHeader,
     // IonButton,
     IonContent,
     IonHeader,
@@ -53,9 +195,11 @@ export default {
     IonPage,
     IonTitle,
     IonToolbar,
+    IonIcon,
     IonSpinner,
-    // IonLabel,
-    // IonItem
+    IonLabel,
+    // IonChip,
+    IonItem
   },
   data() {
     const route = useRoute()
@@ -63,12 +207,14 @@ export default {
       sharedState: state,
       id: route.params.id,
       info: null,
-      error: null
+      error: null,
+      outputs: null,
+      confirmed: false
     }
   },
   setup() {
     const router = useRouter()
-    return { router };
+    return { router, checkmarkCircleOutline };
   },
   beforeMount() {
     this.apiCall()
@@ -87,10 +233,31 @@ export default {
         .post(`${API}/grpc/${network}/GetObject`, { query: this.id },
         )
         .then(response => {
-          console.log(helpers.tx(response.data))
-          this.info = helpers.tx(response.data)
+          if (!response.data.found) {
+            console.log(response.data)
+            this.error = { message: 'Transaction not found' }
+          } else {
+            const outputs = []
+            const formatted = helpers.tx(response.data)
+            this.confirmed = formatted.explorer.confirmed
+            if (formatted.transaction.tx.transactionType === 'transfer') {
+              let total = 0
+              formatted.transaction.tx.transfer.addrs_to.forEach((element, index) => {
+                outputs.push({ addrTo: element, amount: formatted.transaction.tx.transfer.amounts[index] })
+                total += parseInt(formatted.transaction.tx.transfer.amounts[index])
+              })
+              formatted.transaction.total = total
+              this.outputs = outputs
+            }
+            console.log(formatted)
+            this.info = formatted
+          }
         })
         .catch(error => (this.error = error))
+    },
+    dt(s) {
+      const dt = DateTime.fromSeconds(parseInt(s))
+      return dt.toLocaleString(DateTime.DATETIME_FULL)
     }
   },
   watch: {
@@ -108,9 +275,12 @@ export default {
 ion-menu-button {
   color: var(--ion-color-primary);
 }
-ion-content{
+ion-chip .icon-color-primary {
+  color: var(--ion-color-primary);
+}
+ion-content {
   --background: none;
-  background-image: url('../img/dots.png');
+  background-image: url("../img/dots.png");
   background-color: #0b181e;
   background-repeat: no-repeat;
   background-position: bottom -250px right -400px;
@@ -118,10 +288,26 @@ ion-content{
   background-position-y: bottom 150px;
 }
 ion-title {
-  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 ion-title:hover {
   color: var(--ion-color-primary);
   cursor: pointer;
+}
+.addr {
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
+  cursor: pointer;
+}
+.addr:hover {
+  color: var(--ion-color-primary);
+}
+.no-hover:hover {
+  color: unset;
+  cursor: unset;
+}
+#verified {
+  margin-top: 2px;
+  position: absolute;
+  margin-left: 4px;
 }
 </style>

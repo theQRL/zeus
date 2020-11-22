@@ -97,3 +97,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-step-900: #e7e7e7;
   --ion-color-step-950: #f3f3f3;
 }
+.ion-color-secondary {
+  --ion-color-base: #4AAFFF !important;
+}
