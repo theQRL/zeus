@@ -15,9 +15,9 @@
       <div class="ion-text-center">
         <img src="../img/zeus-logo.svg">
       </div>
-      <div class="ion-text-center pb-5">
+      <!-- <div class="ion-text-center pb-5">
         <ion-button>Unlock</ion-button>
-      </div>
+      </div> -->
       <div class="ion-text-right ion-padding ion-margin">
         <img src="../img/qrl-logo.svg">
       </div>
@@ -34,7 +34,7 @@ export default {
   name: 'Home',
   components: {
     IonButtons,
-    IonButton,
+    // IonButton,
     // IonRadio,
     IonContent,
     IonHeader,
