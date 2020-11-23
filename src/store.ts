@@ -5,5 +5,5 @@ export default  {
   //   open: false,
   //   address: null,
   // },
-  network: 'testnet',
+  network: 'mainnet',
 };
