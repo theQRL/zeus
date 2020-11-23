@@ -4,10 +4,11 @@
       <ion-menu content-id="main-content" type="overlay">
         <ion-content>
           <ion-button v-bind:fill="fill()">
-            <ion-select v-model="sharedState.network">
+            <ion-select v-model="sharedState.network" :interface-options="customAlertOptions">
               <ion-select-option value="offline">Offline</ion-select-option>
               <ion-select-option value="testnet">Testnet</ion-select-option>
               <ion-select-option value="mainnet">Mainnet</ion-select-option>
+              <ion-select-option value="zond" disabled>Zond Devnet</ion-select-option>
             </ion-select>
           </ion-button>
           <ion-list id="inbox-list">
@@ -21,12 +22,12 @@
             </ion-menu-toggle>
           </ion-list>
           <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
+            <!-- <ion-list-header>Bookmarks</ion-list-header> -->
   
-            <ion-item v-for="(label, index) in labels" lines="none" :key="index">
+            <!-- <ion-item v-for="(label, index) in labels" lines="none" :key="index">
               <ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
               <ion-label>{{ label }}</ion-label>
-            </ion-item>
+            </ion-item> -->
           </ion-list>
         </ion-content>
       </ion-menu>
@@ -51,7 +52,7 @@ export default defineComponent({
     IonItem, 
     IonLabel, 
     IonList, 
-    IonListHeader, 
+    // IonListHeader, 
     IonMenu, 
     IonMenuToggle, 
     // IonNote, 
@@ -75,6 +76,9 @@ export default defineComponent({
     },
   },
   setup() {
+    const customAlertOptions: any = {
+      header: 'Network',
+    }
     const selectedIndex = ref(0);
     const appPages = [
       {
@@ -89,43 +93,43 @@ export default defineComponent({
         iosIcon: globeOutline,
         mdIcon: globeSharp
       },
-      {
-        title: 'Open',
-        url: '/folder/Open',
-        iosIcon: lockOpenOutline,
-        mdIcon: lockOpenSharp
-      },
-      {
-        title: 'New',
-        url: '/new',
-        iosIcon: addOutline,
-        mdIcon: addSharp
-      },
-      {
-        title: 'Tools',
-        url: '/folder/Tools',
-        iosIcon: cogOutline,
-        mdIcon: cogSharp
-      },
-      {
-        title: 'Contacts',
-        url: '/folder/Contacts',
-        iosIcon: peopleOutline,
-        mdIcon: peopleSharp
-      },
-      {
-        title: 'Staking',
-        url: '/folder/Contacts',
-        iosIcon: hardwareChipOutline,
-        mdIcon: hardwareChipSharp
-      }
+      // {
+      //   title: 'Open',
+      //   url: '/folder/Open',
+      //   iosIcon: lockOpenOutline,
+      //   mdIcon: lockOpenSharp
+      // },
+      // {
+      //   title: 'New',
+      //   url: '/new',
+      //   iosIcon: addOutline,
+      //   mdIcon: addSharp
+      // },
+      // {
+      //   title: 'Tools',
+      //   url: '/folder/Tools',
+      //   iosIcon: cogOutline,
+      //   mdIcon: cogSharp
+      // },
+      // {
+      //   title: 'Contacts',
+      //   url: '/folder/Contacts',
+      //   iosIcon: peopleOutline,
+      //   mdIcon: peopleSharp
+      // },
+      // {
+      //   title: 'Staking',
+      //   url: '/folder/Contacts',
+      //   iosIcon: hardwareChipOutline,
+      //   mdIcon: hardwareChipSharp
+      // }
     ];
     const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
     
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
+    // const path = window.location.pathname.split('folder/')[1];
+    // if (path !== undefined) {
+    //   selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+    // }
     
     const route = useRoute();
     
@@ -149,6 +153,7 @@ export default defineComponent({
       hardwareChipSharp,
       peopleOutline,
       peopleSharp,
+      customAlertOptions,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
   }
