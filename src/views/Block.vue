@@ -38,12 +38,11 @@
                     <ion-list-header color="secondary">
                       TRANSACTIONS
                     </ion-list-header>
-
                     <ion-item-group>
+
                       <ion-item-divider v-if="this.coinbase.length > 0">
                         <ion-label>COINBASE</ion-label>
                       </ion-item-divider>
-
                       <ion-item lines="none" v-for="t in coinbase" :key="t.timestamp_seconds">
                         <ion-label class="addr" @click="this.router.push(`/a/${t.tx.coinbase.addr_to}`)">{{t.tx.coinbase.addr_to}}</ion-label>
                         <ion-note slot="end" color="secondary">{{(t.tx.coinbase.amount / 10e8 )}} Quanta</ion-note>
@@ -52,20 +51,27 @@
                       <ion-item-divider v-if="this.tx.length > 0">
                         <ion-label>TRANSFERS</ion-label>
                       </ion-item-divider>
-
                       <ion-item lines="none" v-for="t in tx" :key="t.timestamp_seconds">
                         <ion-label class="addr" @click="this.router.push(`/tx/${t.tx.transaction_hash}`)">{{t.tx.transaction_hash}}</ion-label>
                         <ion-note slot="end" color="secondary">{{(t.tx.transfer.total / 10e8 )}} Quanta</ion-note>
                       </ion-item>
-<!--
-                      <ion-item-divider>
-                        <ion-label>MESSAGES</ion-label>
-                      </ion-item-divider>
 
-                      <ion-item lines="none">
-                        <ion-label></ion-label>
+                      <ion-item-divider v-if="this.keybase.length > 0">
+                        <ion-label>KEYBASE</ion-label>
+                      </ion-item-divider>
+                      <ion-item lines="none" v-for="t in keybase" :key="t.timestamp_seconds">
+                        <ion-label class="addr" @click="this.router.push(`/a/${t.addr_from}`)">{{t.addr_from}}</ion-label>
+                        <ion-note slot="end" color="secondary">{{(t.explorer.message.keybaseType )}} {{(t.explorer.message.keybaseUser )}}</ion-note>
                       </ion-item>
--->
+
+                      <ion-item-divider v-if="this.msCreate.length > 0">
+                        <ion-label>MULTISIG_CREATE</ion-label>
+                      </ion-item-divider>
+                      <ion-item lines="none" v-for="t in msCreate" :key="t.timestamp_seconds">
+                        <ion-label class="addr" @click="this.router.push(`/tx/${t.tx.transaction_hash}`)">{{t.tx.transaction_hash}}</ion-label>
+                        <ion-note slot="end" color="secondary">{{(t.tx.multi_sig_create.signatories.length )}} signatories</ion-note>
+                      </ion-item>
+
                     </ion-item-group>
                   </ion-list>
 
@@ -134,7 +140,10 @@ export default {
       info: null,
       error: null,
       tx: null,
-      coinbase: null
+      coinbase: null,
+      message: null,
+      keybase: null,
+      msCreate: null
     }
   },
   setup() {
@@ -168,9 +177,15 @@ export default {
           this.info = formatted
           const tx = []
           const coinbase = []
+          const message = []
+          const keybase = []
+          const msCreate = []
           formatted.block_extended.extended_transactions.forEach(element => {
             if (element.tx.transactionType === 'coinbase') {
               coinbase.push(element)
+            }
+            if (element.tx.transactionType === 'multi_sig_create') {
+              msCreate.push(element)
             }
             if (element.tx.transactionType === 'transfer') {
               let total = 0
@@ -180,9 +195,20 @@ export default {
               element.tx.transfer.total = total
               tx.push(element)
             }
+            if (element.tx.transactionType === 'message') {
+              if (element.explorer.message.type === 'KEYBASE') {
+                keybase.push(element)
+              }
+              if (element.explorer.message.type === 'MESSAGE') {
+                message.push(element)
+              }
+            }
           })
           this.tx = tx
           this.coinbase = coinbase
+          this.message = message
+          this.keybase = keybase
+          this.msCreate = msCreate
         }
       })
       .catch(error => (this.error = error))

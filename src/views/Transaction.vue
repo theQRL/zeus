@@ -11,7 +11,7 @@
     <ion-content>
       <ion-toolbar color="primary">
         <ion-title class="ion-text-center no-hover">
-          {{ id }}
+          Transaction {{ id }}
           <ion-icon
             id="verified"
             v-if="!this.error && this.confirmed"
@@ -138,6 +138,186 @@
                 </ion-list>
                 <!-- COINBASE end -->
 
+                <!-- MESSAGE start -->
+                <ion-list
+                  v-if="info.transaction.tx.transactionType === 'message' && info.explorer.message.type ==='MESSAGE'"
+                >
+                  <ion-list-header color="secondary">
+                    MESSAGE
+                  </ion-list-header>
+                  <ion-item-divider>
+                    <ion-label>FROM</ion-label>
+                  </ion-item-divider>
+                  <ion-item lines="none">
+                    <ion-label
+                      class="addr"
+                      @click="
+                        this.router.push(`/a/${info.transaction.addr_from}`)
+                      "
+                      >{{ info.transaction.addr_from }}</ion-label
+                    >
+                  </ion-item>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>MESSAGE HASH</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        >{{ info.transaction.tx.message.message_hash }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>BLOCK</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/block/${info.transaction.header.block_number}`)
+                        "
+                        >{{ info.transaction.header.block_number }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                </ion-list>
+                <!-- MESSAGE end -->
+
+                <!-- KEYBASE start -->
+                <ion-list
+                  v-if="info.transaction.tx.transactionType === 'message' && info.explorer.message.type ==='KEYBASE'"
+                >
+                  <ion-list-header color="secondary">
+                    KEYBASE
+                  </ion-list-header>
+                  <ion-item-divider>
+                    <ion-label>FROM</ion-label>
+                  </ion-item-divider>
+                  <ion-item lines="none">
+                    <ion-label
+                      class="addr"
+                      @click="
+                        this.router.push(`/a/${info.transaction.addr_from}`)
+                      "
+                      >{{ info.transaction.addr_from }}</ion-label
+                    >
+                  </ion-item>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>KEYBASE ACTION</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        >{{info.explorer.message.keybaseType}} {{info.explorer.message.keybaseUser}}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>KEYBASE HASH</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        >{{info.explorer.message.keybaseSignature}}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>BLOCK</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/block/${info.transaction.header.block_number}`)
+                        "
+                        >{{ info.transaction.header.block_number }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                </ion-list>
+                <!-- KEYBASE end -->
+
+                <!-- MS_CREATE start -->
+                <ion-list
+                  v-if="info.transaction.tx.transactionType === 'multi_sig_create'"
+                >
+                  <ion-list-header color="secondary">
+                    MULTISIG_CREATE
+                  </ion-list-header>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>ADDRESS CREATED</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/a/${info.explorer.multisigAddress}`)
+                        "
+                        >{{ info.explorer.multisigAddress }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-divider>
+                    <ion-label>CREATED BY</ion-label>
+                  </ion-item-divider>
+                  <ion-item lines="none">
+                    <ion-label
+                      class="addr"
+                      @click="
+                        this.router.push(`/a/${info.transaction.addr_from}`)
+                      "
+                      >{{ info.transaction.addr_from }}</ion-label
+                    >
+                  </ion-item>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>SIGNATORIES</ion-label>
+                      <ion-note slot="end" class="subhead">WEIGHT</ion-note>
+                    </ion-item-divider>
+                    <ion-item lines="none" v-for="s in msCreate" v-bind:key="s.signatory">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/a/${s.signatory}`)
+                        "
+                        >{{ s.signatory }}</ion-label
+                      >
+                      <ion-note slot="end" color="secondary"
+                        >{{ s.weight }}</ion-note
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>THRESHOLD FOR SPEND</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        >{{ info.transaction.tx.multi_sig_create.threshold }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label>BLOCK</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label
+                        class="addr"
+                        @click="
+                          this.router.push(`/block/${info.transaction.header.block_number}`)
+                        "
+                        >{{ info.transaction.header.block_number }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-item-group>
+                </ion-list>
+                <!-- MS_CREATE end -->
+
                 <!-- <div class="ion-text-center">
               Transaction:<br>
                 {{id}}<br>
@@ -209,7 +389,8 @@ export default {
       info: null,
       error: null,
       outputs: null,
-      confirmed: false
+      confirmed: false,
+      msCreate: null
     }
   },
   setup() {
@@ -238,6 +419,7 @@ export default {
             this.error = { message: 'Transaction not found' }
           } else {
             const outputs = []
+            const msCreate = []
             const formatted = helpers.tx(response.data)
             this.confirmed = formatted.explorer.confirmed
             if (formatted.transaction.tx.transactionType === 'transfer') {
@@ -248,6 +430,12 @@ export default {
               })
               formatted.transaction.total = total
               this.outputs = outputs
+            }
+            if (formatted.transaction.tx.transactionType === 'multi_sig_create') {
+              formatted.transaction.tx.multi_sig_create.signatories.forEach((element, index) => {
+                msCreate.push({signatory: element, weight: formatted.transaction.tx.multi_sig_create.weights[index]})
+              });
+              this.msCreate = msCreate
             }
             console.log(formatted)
             this.info = formatted
@@ -309,5 +497,8 @@ ion-title:hover {
   margin-top: 2px;
   position: absolute;
   margin-left: 4px;
+}
+.subhead {
+  margin-right: 10px;
 }
 </style>
