@@ -225,6 +225,7 @@ ion-menu.md ion-item ion-label {
 }
 
 ion-menu.ios ion-content {
+  --padding-top: 34px;
   --padding-bottom: 20px;
 }
 
