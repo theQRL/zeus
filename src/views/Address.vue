@@ -148,10 +148,17 @@ ion-title:hover {
 ion-segment-button.md {
   color: var(--ion-color-step-650);
 }
-ion-segment-button.md :hover {
+ion-segment-button.md.segment-button-checked:hover {
+  --background-hover-opacity: 0;
+  cursor: unset;
+}
+ion-segment-button.md:hover:not(.segment-button-checked) {
   background: rgba(var(--ion-color-primary-rgb), 0.14);
-  color: #fff !important;
+  --background-hover-opacity: 0.14;
   cursor: pointer;
+}
+ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
+  color: #fff;
 }
 .addr {
   transition: opacity .3s ease-in-out,color .3s ease-in-out;
