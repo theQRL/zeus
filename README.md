@@ -8,7 +8,7 @@
 
 This is Zeus, the front-end for interaction with the QRL network.
 
-It is deployed at [https://zeus.theqrl.org](zeus.theqrl.org)
+It is deployed at [https://zeus.theqrl.org](https://zeus.theqrl.org)
 
 Zeus is a work-in-progress and is not yet considered production ready.
 
