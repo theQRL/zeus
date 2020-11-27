@@ -9,21 +9,76 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+    <ion-toolbar color="primary">
+      <ion-title class="ion-text-center no-hover">{{id}} <ion-icon id="verified" v-if="!(this.error)" :icon="checkmarkCircleOutline"></ion-icon></ion-title>
+    </ion-toolbar>
       <ion-grid>
         <ion-row>
           <ion-col>
+          <ion-toolbar>
+            <ion-segment v-model="activeSegment" value="info" color="secondary">
+              <ion-segment-button value="info">Info</ion-segment-button>
+              <ion-segment-button value="ots">OTS</ion-segment-button>
+              <ion-segment-button value="tokens">Tokens</ion-segment-button>
+              <ion-segment-button value="multisig">Multisig</ion-segment-button>
+            </ion-segment>
+          </ion-toolbar>
             <div class="ion-text-center">
-              Address:<br>
-                {{id}}<br>
                 <div v-if="error !== null">Error: {{error.message}}</div>
-                <div v-if="info !== null">
-                  {{info}}
-                </div>
-                <div v-if="info === null && error === null">
-                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
-                </div>
             </div>
           </ion-col>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'info'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            balance {{ parseInt(info.state.balance) / 10e8 }} Quanta<br>
+            valid address: {{ validate().result }}<br>
+            signature type: {{ validate().sig.type }}<br>
+            number of signatures: {{ validate().sig.number }}<br>
+            hash function: {{ validate().hash.function }}<br>
+            transactions: {{ info.state.transaction_hash_count }}<br>
+            tokens: {{ info.state.tokens_count }}<br>
+            slaves: {{ info.state.slaves_count }}<br>
+            nonce: {{ info.state.nonce }}<br>
+            used ots keys: {{ info.state.used_ots_key_count }}<br>
+            lattice keys: {{ info.state.lattice_pk_count }}
+          </div>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'ots'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            number of signatures: {{ validate().sig.number }}<br>
+            used ots keys: {{ info.state.used_ots_key_count }}<br>
+          </div>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'tokens'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            tokens: {{ info.state.tokens_count }}<br>
+          </div>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'multisig'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            multisig addresses: {{ info.state.multi_sig_address_count }}<br>
+            multisig spends: {{ info.state.multi_sig_spend_count }}<br>
+          </div>
         </ion-row>
       </ion-grid>
     </ion-content>
@@ -31,12 +86,14 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonCol, IonRow, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { useRouter, useRoute } from 'vue-router';
-import axios from 'axios';
+import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
+import { useRouter, useRoute } from 'vue-router'
+import { checkmarkCircleOutline } from 'ionicons/icons'
+import validateAddress from '@theqrl/validate-qrl-address'
+import axios from 'axios'
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API'
-import state from '../store';
+import state from '../store'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -44,6 +101,7 @@ export default {
   name: 'Address',
   components: {
     IonGrid,
+    IonIcon,
     IonCol,
     IonRow,
     IonButtons,
@@ -55,6 +113,8 @@ export default {
     IonTitle,
     IonToolbar,
     IonSpinner,
+    IonSegment,
+    IonSegmentButton,
     // IonLabel,
     // IonItem
   },
@@ -62,6 +122,7 @@ export default {
     const route = useRoute()
     return {
       sharedState: state,
+      activeSegment: 'info',
       id: route.params.id,
       info: null,
       error: null
@@ -72,7 +133,7 @@ export default {
   },
   setup() {
     const router = useRouter()
-    return { router };
+    return { router, checkmarkCircleOutline };
   },
   methods: {
     explorer() {
@@ -89,10 +150,23 @@ export default {
         .post(`${API}/grpc/${network}/GetOptimizedAddressState`, { address: this.id },
         )
         .then(response => {
-          console.log(helpers.a(response.data))
-          this.info = helpers.a(response.data)
+          if (response.data.code === 3) {
+            this.error = { message: response.data.details }
+          } else {
+            console.log(helpers.a(response.data))
+            this.info = helpers.a(response.data)
+          }
         })
         .catch(error => (this.error = error))
+    },
+    segmentDisplay(seg) {
+      if (this.activeSegment === seg) {
+        return true
+      }
+      return false
+    },
+    validate() {
+      return validateAddress.hexString(this.info.state.address)
     }
   },
   watch: {
@@ -125,5 +199,36 @@ ion-title {
 ion-title:hover {
   color: var(--ion-color-primary);
   cursor: pointer;
+}
+ion-segment-button.md {
+  color: var(--ion-color-step-650);
+}
+ion-segment-button.md.segment-button-checked:hover {
+  --background-hover-opacity: 0;
+  cursor: unset;
+}
+ion-segment-button.md:hover:not(.segment-button-checked) {
+  background: rgba(var(--ion-color-primary-rgb), 0.14);
+  --background-hover-opacity: 0.14;
+  cursor: pointer;
+}
+ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
+  color: #fff;
+}
+.addr {
+  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  cursor: pointer;
+}
+.addr:hover {
+  color: var(--ion-color-primary);
+}
+.no-hover:hover {
+  color: unset;
+  cursor: unset;
+}
+#verified {
+  margin-top: 2px;
+  position: absolute;
+  margin-left: 4px;
 }
 </style>
