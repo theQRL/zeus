@@ -16,7 +16,7 @@
         <ion-row>
           <ion-col>
           <ion-toolbar>
-            <ion-segment value="info" color="secondary">
+            <ion-segment v-model="activeSegment" value="info" color="secondary">
               <ion-segment-button value="info">Info</ion-segment-button>
               <ion-segment-button value="ots">OTS</ion-segment-button>
               <ion-segment-button value="tokens">Tokens</ion-segment-button>
@@ -24,17 +24,61 @@
             </ion-segment>
           </ion-toolbar>
             <div class="ion-text-center">
-              Address:<br>
-                {{id}}<br>
                 <div v-if="error !== null">Error: {{error.message}}</div>
-                <div v-if="info !== null">
-                  {{info}}
-                </div>
-                <div v-if="info === null && error === null">
-                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
-                </div>
             </div>
           </ion-col>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'info'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            balance {{ parseInt(info.state.balance) / 10e8 }} Quanta<br>
+            valid address: {{ validate().result }}<br>
+            signature type: {{ validate().sig.type }}<br>
+            number of signatures: {{ validate().sig.number }}<br>
+            hash function: {{ validate().hash.function }}<br>
+            transactions: {{ info.state.transaction_hash_count }}<br>
+            tokens: {{ info.state.tokens_count }}<br>
+            slaves: {{ info.state.slaves_count }}<br>
+            nonce: {{ info.state.nonce }}<br>
+            used ots keys: {{ info.state.used_ots_key_count }}<br>
+            lattice keys: {{ info.state.lattice_pk_count }}
+          </div>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'ots'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            number of signatures: {{ validate().sig.number }}<br>
+            used ots keys: {{ info.state.used_ots_key_count }}<br>
+          </div>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'tokens'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            tokens: {{ info.state.tokens_count }}<br>
+          </div>
+        </ion-row>
+        <ion-row v-if="activeSegment === 'multisig'">
+          <div v-if="info === null && error === null">
+            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+          </div>
+          <div v-if="info !== null">
+            {{ info.state.address }}
+            <br>
+            multisig addresses: {{ info.state.multi_sig_address_count }}<br>
+            multisig spends: {{ info.state.multi_sig_spend_count }}<br>
+          </div>
         </ion-row>
       </ion-grid>
     </ion-content>
@@ -42,13 +86,14 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { useRouter, useRoute } from 'vue-router';
-import { checkmarkCircleOutline } from 'ionicons/icons';
-import axios from 'axios';
+import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
+import { useRouter, useRoute } from 'vue-router'
+import { checkmarkCircleOutline } from 'ionicons/icons'
+import validateAddress from '@theqrl/validate-qrl-address'
+import axios from 'axios'
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API'
-import state from '../store';
+import state from '../store'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -77,6 +122,7 @@ export default {
     const route = useRoute()
     return {
       sharedState: state,
+      activeSegment: 'info',
       id: route.params.id,
       info: null,
       error: null
@@ -112,6 +158,15 @@ export default {
           }
         })
         .catch(error => (this.error = error))
+    },
+    segmentDisplay(seg) {
+      if (this.activeSegment === seg) {
+        return true
+      }
+      return false
+    },
+    validate() {
+      return validateAddress.hexString(this.info.state.address)
     }
   },
   watch: {

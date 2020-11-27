@@ -12,7 +12,7 @@
   "dependencies": {
     "@capacitor/core": "2.4.2",
     "@capacitor/ios": "^2.4.2",
-    "@ionic/vue": "^5.4.0",
+    "@ionic/vue": "^5.5.1",
     "@ionic/vue-router": "^5.4.0",
     "@theqrl/explorer-helpers": "^2.2.0",
     "@theqrl/validate-qrl-address": "^3.0.0",
