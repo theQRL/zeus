@@ -23,16 +23,16 @@
               <ion-segment-button value="multisig">Multisig</ion-segment-button>
             </ion-segment>
           </ion-toolbar>
-            <div class="ion-text-center">
-                <div v-if="error !== null">Error: {{error.message}}</div>
-            </div>
           </ion-col>
         </ion-row>
+        <div class="mid-container">
+          <div v-if="error !== null">Error: {{error.message}}</div>
+        </div>
         <ion-row v-if="activeSegment === 'info'">
-          <div v-if="info === null && error === null">
+          <div class="mid-container" v-if="info === null && error === null">
             <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
           </div>
-          <div v-if="info !== null">
+          <div class="mid-container" v-if="info !== null">
             {{ info.state.address }}
             <br>
             balance {{ parseInt(info.state.balance) / 10e8 }} Quanta<br>
@@ -67,6 +67,7 @@
             {{ info.state.address }}
             <br>
             tokens: {{ info.state.tokens_count }}<br>
+            <Tokens v-bind:id="id"></Tokens>
           </div>
         </ion-row>
         <ion-row v-if="activeSegment === 'multisig'">
@@ -94,6 +95,7 @@ import axios from 'axios'
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API'
 import state from '../store'
+import Tokens from './Tokens.vue'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -116,7 +118,8 @@ export default {
     IonSegment,
     IonSegmentButton,
     // IonLabel,
-    // IonItem
+    // IonItem,
+    Tokens
   },
   data() {
     const route = useRoute()
@@ -230,5 +233,13 @@ ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
   margin-top: 2px;
   position: absolute;
   margin-left: 4px;
+}
+.mid-container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>
