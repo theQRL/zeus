@@ -21,7 +21,7 @@
     "cryptojs": "^2.5.3",
     "luxon": "^1.25.0",
     "vue": "^3.0.0-0",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-rc.5"
   },
   "devDependencies": {
     "@capacitor/cli": "2.4.2",
