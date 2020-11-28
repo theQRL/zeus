@@ -1,9 +1,23 @@
 <template>
-  <div>TOKENS<br>{{info}}</div>
+                    <ion-list v-if="info !== null">
+                    <ion-list-header color="secondary">
+                      TOKEN BALANCES
+                    </ion-list-header>
+                    <ion-item-group v-for="t in info.tokens_detail" :key="t.balance">
+
+                      <ion-item-divider>
+                        <ion-label>{{t.name}}</ion-label>
+                      </ion-item-divider>
+                      <ion-item lines="none">
+                        <ion-label class="addr">{{t.token_txhash}}</ion-label>
+                        <ion-note slot="end" color="secondary">{{t.balance}} {{t.symbol}}</ion-note>
+                      </ion-item>
+                    </ion-item-group>
+                    </ion-list>
 </template>
 
 <script lang="js">
-// import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
+import { IonListHeader, IonLabel, IonItemDivider, IonNote, IonItem, IonItemGroup, IonList } from '@ionic/vue'
 import { useRouter, useRoute } from 'vue-router'
 // import { checkmarkCircleOutline } from 'ionicons/icons'
 // import validateAddress from '@theqrl/validate-qrl-address'
@@ -17,27 +31,16 @@ import state from '../store'
 export default {
   name: 'Tokens',
   components: {
-    // IonGrid,
-    // IonIcon,
-    // IonCol,
-    // IonRow,
-    // IonButtons,
-    // // IonButton,
-    // IonContent,
-    // IonHeader,
-    // IonMenuButton,
-    // IonPage,
-    // IonTitle,
-    // IonToolbar,
-    // IonSpinner,
-    // IonSegment,
-    // IonSegmentButton,
-    // IonLabel,
-    // IonItem
+    IonListHeader,
+    IonLabel,
+    IonItemDivider,
+    IonNote,
+    IonItem,
+    IonItemGroup,
+    IonList
   },
   props: ['id'],
   data() {
-    const route = useRoute()
     return {
       sharedState: state,
       // id: this.$parent.route.params.id,
@@ -90,5 +93,11 @@ export default {
 </script>
 
 <style scoped>
-
+.addr {
+  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  cursor: pointer;
+}
+.addr:hover {
+  color: var(--ion-color-primary);
+}
 </style>
