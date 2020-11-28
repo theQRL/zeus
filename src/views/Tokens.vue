@@ -1,24 +1,21 @@
 <template>
-                    <ion-list v-if="info !== null">
-                    <ion-list-header color="secondary">
-                      TOKEN BALANCES
-                    </ion-list-header>
-                    <ion-item-group v-for="t in info.tokens_detail" :key="t.balance">
-
-                      <ion-item-divider>
-                        <ion-label>{{t.name}}</ion-label>
-                      </ion-item-divider>
-                      <ion-item lines="none">
-                        <ion-label class="addr">{{t.token_txhash}}</ion-label>
-                        <ion-note slot="end" color="secondary">{{t.balance}} {{t.symbol}}</ion-note>
-                      </ion-item>
-                    </ion-item-group>
-                    </ion-list>
+  <ion-list v-if="info !== null">
+    <ion-list-header color="tertiary"> TOKEN BALANCES </ion-list-header>
+    <ion-item-group v-for="t in info.tokens_detail" :key="t.balance">
+      <ion-item-divider>
+        <ion-label>{{ t.name }}</ion-label>
+      </ion-item-divider>
+      <ion-item lines="none">
+        <ion-label class="addr">{{ t.token_txhash }}</ion-label>
+        <ion-note slot="end" color="secondary">{{ t.balance }} {{ t.symbol }}</ion-note>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
 </template>
 
 <script lang="js">
 import { IonListHeader, IonLabel, IonItemDivider, IonNote, IonItem, IonItemGroup, IonList } from '@ionic/vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 // import { checkmarkCircleOutline } from 'ionicons/icons'
 // import validateAddress from '@theqrl/validate-qrl-address'
 import axios from 'axios'
@@ -93,8 +90,12 @@ export default {
 </script>
 
 <style scoped>
+ion-label.md:not(.addr) {
+  color: #fff;
+}
 .addr {
-  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  color: #9DA3A5;
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
   cursor: pointer;
 }
 .addr:hover {

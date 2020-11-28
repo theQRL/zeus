@@ -9,85 +9,87 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-    <ion-toolbar color="primary">
-      <ion-title class="ion-text-center no-hover">{{id}} <ion-icon id="verified" v-if="!(this.error)" :icon="checkmarkCircleOutline"></ion-icon></ion-title>
-    </ion-toolbar>
+      <ion-toolbar color="primary">
+        <ion-title class="ion-text-center no-hover">
+          {{ id }} <ion-icon id="verified" v-if="!this.error" :icon="checkmarkCircleOutline"></ion-icon>
+        </ion-title>
+      </ion-toolbar>
       <ion-grid>
         <ion-row>
           <ion-col>
-          <ion-toolbar>
-            <ion-segment v-model="activeSegment" value="info" color="secondary">
-              <ion-segment-button value="info">Info</ion-segment-button>
-              <ion-segment-button value="ots">OTS</ion-segment-button>
-              <ion-segment-button value="tokens">Tokens</ion-segment-button>
-              <ion-segment-button value="multisig">Multisig</ion-segment-button>
-            </ion-segment>
-          </ion-toolbar>
+            <div class="ion-text-center">
+              <ion-toolbar>
+                <ion-segment v-model="activeSegment" value="info" color="secondary">
+                  <ion-segment-button value="info">Info</ion-segment-button>
+                  <ion-segment-button value="ots">OTS</ion-segment-button>
+                  <ion-segment-button value="tokens">Tokens</ion-segment-button>
+                  <ion-segment-button value="multisig">Multisig</ion-segment-button>
+                </ion-segment>
+              </ion-toolbar>
+              <div class="mid-container">
+                <div v-if="error !== null">Error: {{ error.message }}</div>
+              </div>
+              
+              <div v-if="activeSegment === 'info'">
+                <div class="mid-container" v-if="info === null && error === null">
+                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+                </div>
+                <div class="mid-container" v-if="info !== null">
+                  {{ info.state.address }}
+                  <br />
+                  balance {{ parseInt(info.state.balance) / 10e8 }} Quanta<br />
+                  valid address: {{ validate().result }}<br />
+                  signature type: {{ validate().sig.type }}<br />
+                  number of signatures: {{ validate().sig.number }}<br />
+                  hash function: {{ validate().hash.function }}<br />
+                  transactions: {{ info.state.transaction_hash_count }}<br />
+                  tokens: {{ info.state.tokens_count }}<br />
+                  slaves: {{ info.state.slaves_count }}<br />
+                  nonce: {{ info.state.nonce }}<br />
+                  used ots keys: {{ info.state.used_ots_key_count }}<br />
+                  lattice keys: {{ info.state.lattice_pk_count }}
+                </div>
+              </div>
+              <div v-if="activeSegment === 'ots'">
+                <div v-if="info === null && error === null">
+                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+                </div>
+                <div v-if="info !== null">
+                  {{ info.state.address }}
+                  <br />
+                  number of signatures: {{ validate().sig.number }}<br />
+                  used ots keys: {{ info.state.used_ots_key_count }}<br />
+                </div>
+              </div>
+              <div v-if="activeSegment === 'tokens'">
+                <div v-if="info === null && error === null">
+                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+                </div>
+                <div v-if="info !== null" id="token-list">
+                  <Tokens v-bind:id="id"></Tokens>
+                </div>
+              </div>
+              <div v-if="activeSegment === 'multisig'">
+                <div v-if="info === null && error === null">
+                  <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+                </div>
+                <div v-if="info !== null">
+                  {{ info.state.address }}
+                  <br />
+                  multisig addresses: {{ info.state.multi_sig_address_count }}<br />
+                  multisig spends: {{ info.state.multi_sig_spend_count }}<br />
+                </div>
+              </div>
+            </div>
           </ion-col>
-        </ion-row>
-        <div class="mid-container">
-          <div v-if="error !== null">Error: {{error.message}}</div>
-        </div>
-        <ion-row v-if="activeSegment === 'info'">
-          <div class="mid-container" v-if="info === null && error === null">
-            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
-          </div>
-          <div class="mid-container" v-if="info !== null">
-            {{ info.state.address }}
-            <br>
-            balance {{ parseInt(info.state.balance) / 10e8 }} Quanta<br>
-            valid address: {{ validate().result }}<br>
-            signature type: {{ validate().sig.type }}<br>
-            number of signatures: {{ validate().sig.number }}<br>
-            hash function: {{ validate().hash.function }}<br>
-            transactions: {{ info.state.transaction_hash_count }}<br>
-            tokens: {{ info.state.tokens_count }}<br>
-            slaves: {{ info.state.slaves_count }}<br>
-            nonce: {{ info.state.nonce }}<br>
-            used ots keys: {{ info.state.used_ots_key_count }}<br>
-            lattice keys: {{ info.state.lattice_pk_count }}
-          </div>
-        </ion-row>
-        <ion-row v-if="activeSegment === 'ots'">
-          <div v-if="info === null && error === null">
-            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
-          </div>
-          <div v-if="info !== null">
-            {{ info.state.address }}
-            <br>
-            number of signatures: {{ validate().sig.number }}<br>
-            used ots keys: {{ info.state.used_ots_key_count }}<br>
-          </div>
-        </ion-row>
-        <ion-row v-if="activeSegment === 'tokens'">
-          <div v-if="info === null && error === null">
-            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
-          </div>
-          <div v-if="info !== null">
-            {{ info.state.address }}
-            <br>
-            tokens: {{ info.state.tokens_count }}<br>
-            <Tokens v-bind:id="id"></Tokens>
-          </div>
-        </ion-row>
-        <ion-row v-if="activeSegment === 'multisig'">
-          <div v-if="info === null && error === null">
-            <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
-          </div>
-          <div v-if="info !== null">
-            {{ info.state.address }}
-            <br>
-            multisig addresses: {{ info.state.multi_sig_address_count }}<br>
-            multisig spends: {{ info.state.multi_sig_spend_count }}<br>
-          </div>
         </ion-row>
       </ion-grid>
     </ion-content>
-</ion-page>
+  </ion-page>
 </template>
 
 <script lang="js">
-import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
+import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
 import { useRouter, useRoute } from 'vue-router'
 import { checkmarkCircleOutline } from 'ionicons/icons'
 import validateAddress from '@theqrl/validate-qrl-address'
@@ -187,9 +189,9 @@ export default {
 ion-menu-button {
   color: var(--ion-color-primary);
 }
-ion-content{
+ion-content {
   --background: none;
-  background-image: url('../img/dots.png');
+  background-image: url("../img/dots.png");
   background-color: #0b181e;
   background-repeat: no-repeat;
   background-position: bottom -250px right -400px;
@@ -197,7 +199,7 @@ ion-content{
   background-position-y: bottom 150px;
 }
 ion-title {
-  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 ion-title:hover {
   color: var(--ion-color-primary);
@@ -219,7 +221,7 @@ ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
   color: #fff;
 }
 .addr {
-  transition: opacity .3s ease-in-out,color .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
   cursor: pointer;
 }
 .addr:hover {
@@ -239,7 +241,10 @@ ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  transform: translateY(50%);
+}
+#token-list {
+  margin-top: 15px;
 }
 </style>

@@ -12,11 +12,7 @@
       <ion-toolbar color="primary">
         <ion-title class="ion-text-center no-hover">
           Transaction {{ id }}
-          <ion-icon
-            id="verified"
-            v-if="!this.error && this.confirmed"
-            :icon="checkmarkCircleOutline"
-          ></ion-icon>
+          <ion-icon id="verified" v-if="!this.error && this.confirmed" :icon="checkmarkCircleOutline"></ion-icon>
         </ion-title>
       </ion-toolbar>
       <ion-grid>
@@ -26,43 +22,27 @@
               <div v-if="error !== null">Error: {{ error.message }}</div>
               <div v-if="info !== null">
                 <p>{{ dt(info.transaction.timestamp_seconds) }}</p>
-                
+
                 <!-- TRANSFER start -->
-                <ion-list
-                  v-if="info.transaction.tx.transactionType === 'transfer'"
-                >
-                  <ion-list-header color="secondary">
-                    TRANSFER
-                  </ion-list-header>
+                <ion-list v-if="info.transaction.tx.transactionType === 'transfer'">
+                  <ion-list-header color="secondary"> TRANSFER </ion-list-header>
                   <ion-item-divider>
                     <ion-label>FROM</ion-label>
                   </ion-item-divider>
                   <ion-item lines="none">
-                    <ion-label
-                      class="addr"
-                      @click="
-                        this.router.push(`/a/${info.transaction.addr_from}`)
-                      "
-                      >{{ info.transaction.addr_from }}</ion-label
-                    >
+                    <ion-label class="addr" @click="this.router.push(`/a/${info.transaction.addr_from}`)">{{
+                      info.transaction.addr_from
+                    }}</ion-label>
                   </ion-item>
                   <ion-item-group>
                     <ion-item-divider>
                       <ion-label>TO</ion-label>
                     </ion-item-divider>
-                    <ion-item
-                      v-for="output in outputs"
-                      v-bind:key="output.addrTo"
-                      lines="none"
-                    >
-                      <ion-label
-                        class="addr"
-                        @click="this.router.push(`/a/${output.addrTo}`)"
-                        >{{ output.addrTo }}</ion-label
-                      >
-                      <ion-note slot="end" color="secondary"
-                        >{{ output.amount / 10e8 }} Quanta</ion-note
-                      >
+                    <ion-item v-for="output in outputs" v-bind:key="output.addrTo" lines="none">
+                      <ion-label class="addr" @click="this.router.push(`/a/${output.addrTo}`)">{{
+                        output.addrTo
+                      }}</ion-label>
+                      <ion-note slot="end" color="secondary">{{ output.amount / 10e8 }} Quanta</ion-note>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -70,9 +50,7 @@
                       <ion-label>TOTAL TRANSFERRED</ion-label>
                     </ion-item-divider>
                     <ion-item lines="none">
-                      <ion-label
-                        >{{ info.transaction.total / 10e8 }} Quanta</ion-label
-                      >
+                      <ion-label>{{ info.transaction.total / 10e8 }} Quanta</ion-label>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -82,9 +60,7 @@
                     <ion-item lines="none">
                       <ion-label
                         class="addr"
-                        @click="
-                          this.router.push(`/block/${info.transaction.header.block_number}`)
-                        "
+                        @click="this.router.push(`/block/${info.transaction.header.block_number}`)"
                         >{{ info.transaction.header.block_number }}</ion-label
                       >
                     </ion-item>
@@ -93,32 +69,22 @@
                 <!-- TRANSFER end -->
 
                 <!-- COINBASE start -->
-                <ion-list
-                  v-if="info.transaction.tx.transactionType === 'coinbase'"
-                >
-                  <ion-list-header color="secondary">
-                    COINBASE
-                  </ion-list-header>
+                <ion-list v-if="info.transaction.tx.transactionType === 'coinbase'">
+                  <ion-list-header color="secondary"> COINBASE </ion-list-header>
                   <ion-item-divider>
                     <ion-label>TO</ion-label>
                   </ion-item-divider>
                   <ion-item lines="none">
-                    <ion-label
-                      class="addr"
-                      @click="
-                        this.router.push(`/a/${info.transaction.tx.coinbase.addr_to}`)
-                      "
-                      >{{ info.transaction.tx.coinbase.addr_to }}</ion-label
-                    >
+                    <ion-label class="addr" @click="this.router.push(`/a/${info.transaction.tx.coinbase.addr_to}`)">{{
+                      info.transaction.tx.coinbase.addr_to
+                    }}</ion-label>
                   </ion-item>
                   <ion-item-group>
                     <ion-item-divider>
                       <ion-label>BLOCK REWARD</ion-label>
                     </ion-item-divider>
                     <ion-item lines="none">
-                      <ion-label
-                        >{{ info.transaction.tx.coinbase.amount / 10e8 }} Quanta</ion-label
-                      >
+                      <ion-label>{{ info.transaction.tx.coinbase.amount / 10e8 }} Quanta</ion-label>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -128,9 +94,7 @@
                     <ion-item lines="none">
                       <ion-label
                         class="addr"
-                        @click="
-                          this.router.push(`/block/${info.transaction.header.block_number}`)
-                        "
+                        @click="this.router.push(`/block/${info.transaction.header.block_number}`)"
                         >{{ info.transaction.header.block_number }}</ion-label
                       >
                     </ion-item>
@@ -140,31 +104,23 @@
 
                 <!-- MESSAGE start -->
                 <ion-list
-                  v-if="info.transaction.tx.transactionType === 'message' && info.explorer.message.type ==='MESSAGE'"
+                  v-if="info.transaction.tx.transactionType === 'message' && info.explorer.message.type === 'MESSAGE'"
                 >
-                  <ion-list-header color="secondary">
-                    MESSAGE
-                  </ion-list-header>
+                  <ion-list-header color="secondary"> MESSAGE </ion-list-header>
                   <ion-item-divider>
                     <ion-label>FROM</ion-label>
                   </ion-item-divider>
                   <ion-item lines="none">
-                    <ion-label
-                      class="addr"
-                      @click="
-                        this.router.push(`/a/${info.transaction.addr_from}`)
-                      "
-                      >{{ info.transaction.addr_from }}</ion-label
-                    >
+                    <ion-label class="addr" @click="this.router.push(`/a/${info.transaction.addr_from}`)">{{
+                      info.transaction.addr_from
+                    }}</ion-label>
                   </ion-item>
                   <ion-item-group>
                     <ion-item-divider>
                       <ion-label>MESSAGE HASH</ion-label>
                     </ion-item-divider>
                     <ion-item lines="none">
-                      <ion-label
-                        >{{ info.transaction.tx.message.message_hash }}</ion-label
-                      >
+                      <ion-label>{{ info.transaction.tx.message.message_hash }}</ion-label>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -174,9 +130,7 @@
                     <ion-item lines="none">
                       <ion-label
                         class="addr"
-                        @click="
-                          this.router.push(`/block/${info.transaction.header.block_number}`)
-                        "
+                        @click="this.router.push(`/block/${info.transaction.header.block_number}`)"
                         >{{ info.transaction.header.block_number }}</ion-label
                       >
                     </ion-item>
@@ -186,22 +140,16 @@
 
                 <!-- KEYBASE start -->
                 <ion-list
-                  v-if="info.transaction.tx.transactionType === 'message' && info.explorer.message.type ==='KEYBASE'"
+                  v-if="info.transaction.tx.transactionType === 'message' && info.explorer.message.type === 'KEYBASE'"
                 >
-                  <ion-list-header color="secondary">
-                    KEYBASE
-                  </ion-list-header>
+                  <ion-list-header color="secondary"> KEYBASE </ion-list-header>
                   <ion-item-divider>
                     <ion-label>FROM</ion-label>
                   </ion-item-divider>
                   <ion-item lines="none">
-                    <ion-label
-                      class="addr"
-                      @click="
-                        this.router.push(`/a/${info.transaction.addr_from}`)
-                      "
-                      >{{ info.transaction.addr_from }}</ion-label
-                    >
+                    <ion-label class="addr" @click="this.router.push(`/a/${info.transaction.addr_from}`)">{{
+                      info.transaction.addr_from
+                    }}</ion-label>
                   </ion-item>
                   <ion-item-group>
                     <ion-item-divider>
@@ -209,7 +157,7 @@
                     </ion-item-divider>
                     <ion-item lines="none">
                       <ion-label
-                        >{{info.explorer.message.keybaseType}} {{info.explorer.message.keybaseUser}}</ion-label
+                        >{{ info.explorer.message.keybaseType }} {{ info.explorer.message.keybaseUser }}</ion-label
                       >
                     </ion-item>
                   </ion-item-group>
@@ -218,9 +166,7 @@
                       <ion-label>KEYBASE HASH</ion-label>
                     </ion-item-divider>
                     <ion-item lines="none">
-                      <ion-label
-                        >{{info.explorer.message.keybaseSignature}}</ion-label
-                      >
+                      <ion-label>{{ info.explorer.message.keybaseSignature }}</ion-label>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -230,9 +176,7 @@
                     <ion-item lines="none">
                       <ion-label
                         class="addr"
-                        @click="
-                          this.router.push(`/block/${info.transaction.header.block_number}`)
-                        "
+                        @click="this.router.push(`/block/${info.transaction.header.block_number}`)"
                         >{{ info.transaction.header.block_number }}</ion-label
                       >
                     </ion-item>
@@ -241,37 +185,25 @@
                 <!-- KEYBASE end -->
 
                 <!-- MS_CREATE start -->
-                <ion-list
-                  v-if="info.transaction.tx.transactionType === 'multi_sig_create'"
-                >
-                  <ion-list-header color="secondary">
-                    MULTISIG_CREATE
-                  </ion-list-header>
+                <ion-list v-if="info.transaction.tx.transactionType === 'multi_sig_create'">
+                  <ion-list-header color="secondary"> MULTISIG_CREATE </ion-list-header>
                   <ion-item-group>
                     <ion-item-divider>
                       <ion-label>ADDRESS CREATED</ion-label>
                     </ion-item-divider>
                     <ion-item lines="none">
-                      <ion-label
-                        class="addr"
-                        @click="
-                          this.router.push(`/a/${info.explorer.multisigAddress}`)
-                        "
-                        >{{ info.explorer.multisigAddress }}</ion-label
-                      >
+                      <ion-label class="addr" @click="this.router.push(`/a/${info.explorer.multisigAddress}`)">{{
+                        info.explorer.multisigAddress
+                      }}</ion-label>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-divider>
                     <ion-label>CREATED BY</ion-label>
                   </ion-item-divider>
                   <ion-item lines="none">
-                    <ion-label
-                      class="addr"
-                      @click="
-                        this.router.push(`/a/${info.transaction.addr_from}`)
-                      "
-                      >{{ info.transaction.addr_from }}</ion-label
-                    >
+                    <ion-label class="addr" @click="this.router.push(`/a/${info.transaction.addr_from}`)">{{
+                      info.transaction.addr_from
+                    }}</ion-label>
                   </ion-item>
                   <ion-item-group>
                     <ion-item-divider>
@@ -279,16 +211,10 @@
                       <ion-note slot="end" class="subhead">WEIGHT</ion-note>
                     </ion-item-divider>
                     <ion-item lines="none" v-for="s in msCreate" v-bind:key="s.signatory">
-                      <ion-label
-                        class="addr"
-                        @click="
-                          this.router.push(`/a/${s.signatory}`)
-                        "
-                        >{{ s.signatory }}</ion-label
-                      >
-                      <ion-note slot="end" color="secondary"
-                        >{{ s.weight }}</ion-note
-                      >
+                      <ion-label class="addr" @click="this.router.push(`/a/${s.signatory}`)">{{
+                        s.signatory
+                      }}</ion-label>
+                      <ion-note slot="end" color="secondary">{{ s.weight }}</ion-note>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -296,9 +222,7 @@
                       <ion-label>THRESHOLD FOR SPEND</ion-label>
                     </ion-item-divider>
                     <ion-item lines="none">
-                      <ion-label
-                        >{{ info.transaction.tx.multi_sig_create.threshold }}</ion-label
-                      >
+                      <ion-label>{{ info.transaction.tx.multi_sig_create.threshold }}</ion-label>
                     </ion-item>
                   </ion-item-group>
                   <ion-item-group>
@@ -308,9 +232,7 @@
                     <ion-item lines="none">
                       <ion-label
                         class="addr"
-                        @click="
-                          this.router.push(`/block/${info.transaction.header.block_number}`)
-                        "
+                        @click="this.router.push(`/block/${info.transaction.header.block_number}`)"
                         >{{ info.transaction.header.block_number }}</ion-label
                       >
                     </ion-item>
@@ -332,10 +254,7 @@
               </div>
 
               <div v-if="info === null && error === null">
-                <ion-spinner
-                  class="ion-text-center"
-                  color="secondary"
-                ></ion-spinner>
+                <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
               </div>
             </div>
           </ion-col>
@@ -346,7 +265,7 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonCol, IonRow, IonButtons, IonIcon, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonNote, IonList, IonItemGroup, IonItemDivider, IonListHeader, } from '@ionic/vue';
+import { IonGrid, IonCol, IonRow, IonButtons, IonIcon, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonNote, IonList, IonItemGroup, IonItemDivider, IonListHeader, } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 import axios from 'axios';
