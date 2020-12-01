@@ -26,7 +26,7 @@
 </template>
 
 <script lang="js">
-import { IonButtons, IonRow, IonItem, IonRadioGroup, IonListHeader, IonButton, IonRadio, IonLabel, IonToggle, IonCol, IonGrid, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 // import { useRoute } from 'vue-router';
 // import { ref, computed, watch } from 'vue';
 
