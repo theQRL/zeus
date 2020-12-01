@@ -6,7 +6,7 @@
         <ion-label>{{ t.name }}</ion-label>
       </ion-item-divider>
       <ion-item lines="none">
-        <ion-label class="addr">{{ t.token_txhash }}</ion-label>
+        <ion-label @click="this.router.push(`/tx/${t.token_txhash }`)" class="addr">{{ t.token_txhash }}</ion-label>
         <ion-note slot="end" color="secondary">{{ t.balance }} {{ t.symbol }}</ion-note>
       </ion-item>
     </ion-item-group>
