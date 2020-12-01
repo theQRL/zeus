@@ -73,11 +73,8 @@
                 <div v-if="info === null && error === null">
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
                 </div>
-                <div v-if="info !== null">
-                  {{ info.state.address }}
-                  <br />
-                  multisig addresses: {{ info.state.multi_sig_address_count }}<br />
-                  multisig spends: {{ info.state.multi_sig_spend_count }}<br />
+                <div v-if="info !== null" id="multisig-list">
+                  <Multisig v-bind:id="id"></Multisig>
                 </div>
               </div>
             </div>
@@ -98,6 +95,7 @@ import helpers from '@theqrl/explorer-helpers'
 import API from '../API'
 import state from '../store'
 import Tokens from './Tokens.vue'
+import Multisig from './Multisig.vue'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -121,7 +119,8 @@ export default {
     IonSegmentButton,
     // IonLabel,
     // IonItem,
-    Tokens
+    Tokens,
+    Multisig
   },
   data() {
     const route = useRoute()

@@ -1,20 +1,17 @@
 <template>
   <ion-list v-if="info !== null">
-    <ion-list-header color="tertiary"> TOKEN BALANCES </ion-list-header>
-    <ion-item-group v-for="t in info.tokens_detail" :key="t.balance">
-      <ion-item-divider>
-        <ion-label>{{ t.name }}</ion-label>
-      </ion-item-divider>
+    <ion-list-header color="tertiary"> {{ info.multi_sig_detail.length }} MULTISIG ADDRESSES </ion-list-header>
+    <ion-item-group v-for="t in info.multi_sig_detail" :key="t.balance">
       <ion-item lines="none">
-        <ion-label @click="this.router.push(`/tx/${t.token_txhash }`)" class="addr">{{ t.token_txhash }}</ion-label>
-        <ion-note slot="end" color="secondary">{{ t.balance }} {{ t.symbol }}</ion-note>
+        <ion-label @click="this.router.push(`/a/${t.address }`)" class="addr">{{ t.address }}</ion-label>
+        <ion-note slot="end" color="secondary">{{ parseInt(t.balance) / 10e8 }} Quanta </ion-note>
       </ion-item>
     </ion-item-group>
   </ion-list>
 </template>
 
 <script lang="js">
-import { IonListHeader, IonLabel, IonItemDivider, IonNote, IonItem, IonItemGroup, IonList } from '@ionic/vue'
+import { IonListHeader, IonLabel, IonNote, IonItem, IonItemGroup, IonList } from '@ionic/vue'
 import { useRouter } from 'vue-router'
 // import { checkmarkCircleOutline } from 'ionicons/icons'
 // import validateAddress from '@theqrl/validate-qrl-address'
@@ -26,11 +23,10 @@ import state from '../store'
 // import { ref, computed, watch } from 'vue';
 
 export default {
-  name: 'Tokens',
+  name: 'Multisig',
   components: {
     IonListHeader,
     IonLabel,
-    IonItemDivider,
     IonNote,
     IonItem,
     IonItemGroup,
@@ -60,9 +56,9 @@ export default {
         return
       }
       console.log('Fetching from: ' + network)
-      console.log('id for tokens is ' + this.id)
+      console.log('id for multisig is ' + this.id)
       axios
-        .post(`${API}/grpc/${network}/GetTokensByAddress`, {
+        .post(`${API}/grpc/${network}/GetMultiSigAddressesByAddress`, {
           address: this.id, 
           item_per_page: 100, // eslint-disable-line
           page_number: 1, }, // eslint-disable-line
@@ -72,7 +68,7 @@ export default {
           if (response.data.code === 3) {
             this.error = { message: response.data.details }
           } else {
-            this.info = helpers.tokens(response.data)
+            this.info = helpers.multisig(response.data)
           }
         })
         .catch(error => (this.error = error))

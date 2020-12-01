@@ -44,8 +44,9 @@
                         <ion-label>COINBASE</ion-label>
                       </ion-item-divider>
                       <ion-item lines="none" v-for="t in coinbase" :key="t.timestamp_seconds">
+                        <ion-icon @click="this.router.push(`/tx/${t.tx.transaction_hash}`)" slot="start" class="addr" :icon="ellipsisHorizontalOutline"></ion-icon>
                         <ion-label class="addr" @click="this.router.push(`/a/${t.tx.coinbase.addr_to}`)">{{t.tx.coinbase.addr_to}}</ion-label>
-                        <ion-note slot="end" color="secondary">{{(t.tx.coinbase.amount / 10e8 )}} Quanta</ion-note>
+                        <ion-note slot="end" color="secondary">{{(t.tx.coinbase.amount / 10e8 )}} Quanta </ion-note>
                       </ion-item>
 
                       <ion-item-divider v-if="this.tx.length > 0">
@@ -100,7 +101,7 @@
 <script lang="js">
 import { IonGrid, IonList, IonItemGroup, IonListHeader, IonItemDivider, IonNote, IonCol, IonRow, IonIcon, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
-import { chevronForwardOutline, chevronBackOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { chevronForwardOutline, chevronBackOutline, checkmarkCircleOutline, ellipsisHorizontalOutline } from 'ionicons/icons';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
@@ -148,7 +149,7 @@ export default {
   },
   setup() {
     const router = useRouter()
-    return { router, chevronBackOutline, chevronForwardOutline, checkmarkCircleOutline };
+    return { router, chevronBackOutline, chevronForwardOutline, checkmarkCircleOutline, ellipsisHorizontalOutline };
   },
   beforeMount() {
     this.apiCall()
@@ -266,10 +267,14 @@ ion-title:hover {
   cursor: pointer;
 }
 .addr {
+  color: #fff;
   transition: opacity .3s ease-in-out,color .3s ease-in-out;
   cursor: pointer;
 }
 .addr:hover {
+  color: var(--ion-color-primary);
+}
+.addr:hover svg {
   color: var(--ion-color-primary);
 }
 .no-hover:hover {
