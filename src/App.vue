@@ -23,7 +23,7 @@
           </ion-list>
           <ion-list id="labels-list">
             <!-- <ion-list-header>Bookmarks</ion-list-header> -->
-  
+            <ion-item lines="none" class="addr" @click="friend(0)"><ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>Friend</ion-item>
             <!-- <ion-item v-for="(label, index) in labels" lines="none" :key="index">
               <ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
               <ion-label>{{ label }}</ion-label>
@@ -39,7 +39,7 @@
 <script lang="ts">
 import { IonApp, IonSelectOption, IonButton, IonSelect, IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { addOutline, addSharp, bookmarkOutline, bookmarkSharp, lockOpenOutline, lockOpenSharp, homeOutline, homeSharp, globeOutline, globeSharp, cogOutline, cogSharp, hardwareChipOutline, hardwareChipSharp, peopleOutline, peopleSharp } from 'ionicons/icons';
 import state from './store';
 
@@ -74,8 +74,15 @@ export default defineComponent({
       }
       return 'outline';
     },
+    friend(num: number) {
+      console.log(num)
+      const route = '/a/Q010600286a4c7bcc7f701dc7cf0389fd9be402b610894e306aad35078539599398f9681c64e56c'
+      this.router.push(route)
+    },
   },
   setup() {
+    const router = useRouter()
+    const route = useRoute()
     const customAlertOptions: any = {
       header: 'Network',
     }
@@ -133,8 +140,6 @@ export default defineComponent({
     //   selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     // }
     
-    const route = useRoute();
-    
     return { 
       selectedIndex,
       appPages, 
@@ -155,6 +160,7 @@ export default defineComponent({
       hardwareChipSharp,
       peopleOutline,
       peopleSharp,
+      router,
       customAlertOptions,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
@@ -284,5 +290,11 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
-
+.addr {
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
+  cursor: pointer;
+}
+.addr:hover {
+  color: var(--ion-color-primary);
+}
 </style>
