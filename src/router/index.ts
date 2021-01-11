@@ -33,6 +33,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/new',
     component: () => import ('../views/New.vue')
+  },
+  {
+    path: '/open/:type?',
+    component: () => import ('../views/Open.vue')
   }
 ]
 
