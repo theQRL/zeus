@@ -20,6 +20,8 @@
     "core-js": "^3.6.5",
     "cryptojs": "^2.5.3",
     "luxon": "^1.25.0",
+    "qrllib": "^1.2.1",
+    "random-bytes": "^1.0.0",
     "vue": "^3.0.0-0",
     "vue-router": "^4.0.0-rc.5"
   },

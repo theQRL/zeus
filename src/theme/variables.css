@@ -7,75 +7,67 @@ http://ionicframework.com/docs/theming/ */
   --ion-text-color: #fff;
   /** primary **/
   --ion-color-primary: #FFA729;
-  --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary-rgb: 255, 167, 41;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #e09324;
+  --ion-color-primary-tint: #ffb03e;
 
-  /** secondary **/
   --ion-color-secondary: #4AAFFF;
-  --ion-color-secondary-rgb: 61, 194, 255;
-  --ion-color-secondary-contrast: #ffffff;
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #3171e0;
-  --ion-color-secondary-tint: #50c8ff;
+  --ion-color-secondary-rgb: 74, 175, 255;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #419ae0;
+  --ion-color-secondary-tint: #5cb7ff;
 
-  /** tertiary **/
   --ion-color-tertiary: #3C464B;
-  --ion-color-tertiary-rgb: 82, 96, 255;
+  --ion-color-tertiary-rgb: 60, 70, 75;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
-  --ion-color-tertiary-shade: #4854e0;
-  --ion-color-tertiary-tint: #6370ff;
+  --ion-color-tertiary-shade: #353e42;
+  --ion-color-tertiary-tint: #50595d;
 
-  /** success **/
-  --ion-color-success: #2dd36f;
-  --ion-color-success-rgb: 45, 211, 111;
-  --ion-color-success-contrast: #ffffff;
-  --ion-color-success-contrast-rgb: 255, 255, 255;
-  --ion-color-success-shade: #28ba62;
-  --ion-color-success-tint: #42d77d;
+  --ion-color-success: #4FE296;
+  --ion-color-success-rgb: 79, 226, 150;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-color-success-shade: #46c784;
+  --ion-color-success-tint: #61e5a1;
 
-  /** warning **/
-  --ion-color-warning: #ffc409;
-  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning: #FCF94B;
+  --ion-color-warning-rgb: 252, 249, 75;
   --ion-color-warning-contrast: #000000;
   --ion-color-warning-contrast-rgb: 0, 0, 0;
-  --ion-color-warning-shade: #e0ac08;
-  --ion-color-warning-tint: #ffca22;
+  --ion-color-warning-shade: #dedb42;
+  --ion-color-warning-tint: #fcfa5d;
 
-  /** danger **/
-  --ion-color-danger: #eb445a;
-  --ion-color-danger-rgb: 235, 68, 90;
-  --ion-color-danger-contrast: #ffffff;
-  --ion-color-danger-contrast-rgb: 255, 255, 255;
-  --ion-color-danger-shade: #cf3c4f;
-  --ion-color-danger-tint: #ed576b;
+  --ion-color-danger: #FF6066;
+  --ion-color-danger-rgb: 255, 96, 102;
+  --ion-color-danger-contrast: #000000;
+  --ion-color-danger-contrast-rgb: 0, 0, 0;
+  --ion-color-danger-shade: #e0545a;
+  --ion-color-danger-tint: #ff7075;
 
-  /** dark **/
-  --ion-color-dark: #222428;
-  --ion-color-dark-rgb: 34, 36, 40;
+  --ion-color-dark: #0b181e;
+  --ion-color-dark-rgb: 11, 24, 30;
   --ion-color-dark-contrast: #ffffff;
   --ion-color-dark-contrast-rgb: 255, 255, 255;
-  --ion-color-dark-shade: #1e2023;
-  --ion-color-dark-tint: #383a3e;
+  --ion-color-dark-shade: #0a151a;
+  --ion-color-dark-tint: #232f35;
 
-  /** medium **/
-  --ion-color-medium: #92949c;
-  --ion-color-medium-rgb: 146, 148, 156;
+  --ion-color-medium: #6D7478;
+  --ion-color-medium-rgb: 109, 116, 120;
   --ion-color-medium-contrast: #ffffff;
   --ion-color-medium-contrast-rgb: 255, 255, 255;
-  --ion-color-medium-shade: #808289;
-  --ion-color-medium-tint: #9d9fa6;
+  --ion-color-medium-shade: #60666a;
+  --ion-color-medium-tint: #7c8286;
 
-  /** light **/
-  --ion-color-light: #f4f5f8;
-  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light: #9DA3A5;
+  --ion-color-light-rgb: 157, 163, 165;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
-  --ion-color-light-shade: #d7d8da;
-  --ion-color-light-tint: #f5f6f9;
+  --ion-color-light-shade: #8a8f91;
+  --ion-color-light-tint: #a7acae;
 
   --ion-color-step-50: #1e1e1e;
   --ion-color-step-100: #2a2a2a;

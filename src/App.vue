@@ -106,12 +106,12 @@ export default defineComponent({
       //   iosIcon: lockOpenOutline,
       //   mdIcon: lockOpenSharp
       // },
-      // {
-      //   title: 'New',
-      //   url: '/new',
-      //   iosIcon: addOutline,
-      //   mdIcon: addSharp
-      // },
+      {
+        title: 'New',
+        url: '/new',
+        iosIcon: addOutline,
+        mdIcon: addSharp
+      },
       // {
       //   title: 'Tools',
       //   url: '/folder/Tools',
@@ -295,6 +295,13 @@ ion-item.selected {
   cursor: pointer;
 }
 .addr:hover {
+  color: var(--ion-color-primary);
+}
+#inbox-list ion-item {
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
+  cursor: pointer;
+}
+#inbox-list ion-item:hover {
   color: var(--ion-color-primary);
 }
 </style>
