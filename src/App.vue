@@ -100,12 +100,12 @@ export default defineComponent({
         iosIcon: globeOutline,
         mdIcon: globeSharp
       },
-      // {
-      //   title: 'Open',
-      //   url: '/folder/Open',
-      //   iosIcon: lockOpenOutline,
-      //   mdIcon: lockOpenSharp
-      // },
+      {
+        title: 'Open',
+        url: '/open',
+        iosIcon: lockOpenOutline,
+        mdIcon: lockOpenSharp
+      },
       {
         title: 'New',
         url: '/new',
