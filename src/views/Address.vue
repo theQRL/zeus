@@ -14,6 +14,18 @@
           {{ id }} <ion-icon id="verified" v-if="!this.error" :icon="checkmarkCircleOutline"></ion-icon>
         </ion-title>
       </ion-toolbar>
+            <ion-grid>
+        <ion-row>
+          <ion-col style="text-align: center;">
+          <div v-if="info !== null">
+            <ion-chip outline color="secondary">
+              <ion-label>Balance</ion-label>
+            </ion-chip>
+            <p>{{ parseInt(info.state.balance) / 10e8 }} Quanta</p>
+            </div>
+          </ion-col>
+        </ion-row>
+            </ion-grid>
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -86,7 +98,7 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
+import { IonGrid, IonChip, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel } from '@ionic/vue'
 import { useRouter, useRoute } from 'vue-router'
 import { checkmarkCircleOutline } from 'ionicons/icons'
 import validateAddress from '@theqrl/validate-qrl-address'
@@ -104,6 +116,7 @@ export default {
   components: {
     IonGrid,
     IonIcon,
+    IonChip,
     IonCol,
     IonRow,
     IonButtons,
@@ -117,7 +130,7 @@ export default {
     IonSpinner,
     IonSegment,
     IonSegmentButton,
-    // IonLabel,
+    IonLabel,
     // IonItem,
     Tokens,
     Multisig

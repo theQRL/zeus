@@ -6,4 +6,5 @@ export default  {
   //   address: null,
   // },
   network: 'mainnet',
+  qrllib: false
 };
