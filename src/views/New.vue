@@ -12,10 +12,10 @@
     <ion-content>
       <div id="container">
         <ion-grid v-if="result">
-           <p>{{ result }}</p>
+          <p>{{ result }}</p>
         </ion-grid>
         <ion-grid v-if="generating">
-           <ion-spinner name="crescent"></ion-spinner>
+          <ion-spinner name="crescent"></ion-spinner>
         </ion-grid>
         <ion-grid v-if="!generating && !result">
           <ion-row>
@@ -31,7 +31,7 @@
           <ion-row v-if="shown">
             <ion-col></ion-col>
             <ion-col>
-              <ion-radio-group value="SHA2_256">
+              <ion-radio-group value="SHA2_256" v-model="hashFunction">
                 <ion-list-header>
                   <ion-label class="ion-text-left">Hash Function</ion-label>
                 </ion-list-header>
@@ -52,7 +52,7 @@
                 </ion-item>
               </ion-radio-group>
 
-              <ion-radio-group value="10">
+              <ion-radio-group value="10" v-model="treeHeight">
                 <ion-list-header>
                   <ion-label class="ion-text-left">Tree Height</ion-label>
                 </ion-list-header>
@@ -129,13 +129,15 @@ export default {
       shown: false,
       generating: false,
       result: null,
+      treeHeight: "10",
+      hashFunction: "SHA2_256",
     }
   },
   methods: {
     toggle() {
       this.shown = !this.shown
     },
-    generateWallet() {
+    async generateWallet() {
       this.generating = true
       const toUint8Vector = (arr) => {
         const vec = new QRLLIB.Uint8Vector();
@@ -144,31 +146,46 @@ export default {
         }
         return vec;
       };
-      async function makeWallet() {
-        let XMSS_OBJECT = null;
-        const hashFunction = QRLLIB.eHashFunction.SHA2_256
-        const xmssHeight = 8
-        const randomSeed = toUint8Vector(await randomBytes(48));
-        XMSS_OBJECT = await new QRLLIB.Xmss.fromParameters(randomSeed, xmssHeight, hashFunction);
-        return XMSS_OBJECT;
+      async function makeWallet(params) {
+        let XMSS_OBJECT = null
+        let hashFunction = null
+        if (params.hashFunction === 'SHA2_256') {
+          hashFunction = QRLLIB.eHashFunction.SHA2_256
+        }
+        if (params.hashFunction === 'SHAKE_128') {
+          hashFunction = QRLLIB.eHashFunction.SHAKE_128
+        }
+        if (params.hashFunction === 'SHAKE_256') {
+          hashFunction = QRLLIB.eHashFunction.SHAKE_256
+        }
+        const xmssHeight = parseInt(params.treeHeight)
+        const randomSeed = toUint8Vector(await randomBytes(48))
+        XMSS_OBJECT = await new QRLLIB.Xmss.fromParameters(randomSeed, xmssHeight, hashFunction)
+        return XMSS_OBJECT
       }
 
-      async function gen() {
-        const Q = await makeWallet();
-        console.log(Q.getAddress());
+      async function gen(params) {
+        const Q = await makeWallet(params)
+        console.log(Q.getAddress())
         return Q
       }
-      // generate an address asynchronously
-      this.$nextTick(() => {
-        gen().then((Q) => {
-          this.generating = false
-          this.result = {
-            address: Q.getAddress(),
-            hexseed: Q.getHexSeed(),
-            mnemonic: Q.getMnemonic(),
-          }
-        })
-      })
+
+      const checkElement = async selector => {
+        while ( document.querySelector(selector) === null) {
+          await new Promise( resolve =>  requestAnimationFrame(resolve) )
+        }
+        return document.querySelector(selector)
+      }
+
+      await checkElement(".spinner-crescent")
+            gen({ treeHeight: this.treeHeight, hashFunction: this.hashFunction }).then((Q) => {
+              this.generating = false
+              this.result = {
+                address: Q.getAddress(),
+                hexseed: Q.getHexSeed(),
+                mnemonic: Q.getMnemonic(),
+              }
+            })
     }
   }
 }

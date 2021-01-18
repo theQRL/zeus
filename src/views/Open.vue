@@ -23,8 +23,11 @@
         <ion-grid v-if="activeSegment === 'hexseed'">
           <ion-item>
             <ion-label position="stacked">Hexseed / Mnemonic</ion-label>
-            <ion-input placeholder="hexseed or mnemonic" type="password"></ion-input>
+            <ion-input placeholder="hexseed or mnemonic" type="password" v-model="hexOrMnemonic"></ion-input>
           </ion-item>
+        <ion-item color="danger" v-if="error !== null">
+          <ion-label>{{error}}</ion-label>
+        </ion-item>
           <ion-row>
             <ion-col></ion-col>
             <ion-col>
@@ -45,6 +48,7 @@
 </template>
 
 <script lang="js">
+/* global QRLLIB */
 import { IonSegment, IonSegmentButton, IonItem, IonRow, IonCol, IonLabel, IonInput, IonButtons, IonButton, IonGrid, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRoute } from 'vue-router';
 export default {
@@ -82,11 +86,37 @@ export default {
       shown: false,
       generating: false,
       result: null,
+      hexOrMnemonic: null,
+      error: null,
     }
   },
   methods: {
     openWallet() {
       console.log('Open wallet clicked')
+      console.log(this.hexOrMnemonic)
+      let type = null
+      if (this.hexOrMnemonic.trim().length === 102) {
+        type = 'hexseed'
+      }
+      if (this.hexOrMnemonic.trim().split(' ') === 34) {
+        type = 'mnemonic'
+      }
+      let XMSS_OBJECT = null;
+      let thisAddress = null;
+      if (type === null) {
+        this.error = 'Invalid hexseed/mnemonic: please check carefully'
+        return
+      }
+      if (type === 'hexseed') {
+        XMSS_OBJECT = QRLLIB.Xmss.fromHexSeed(this.hexOrMnemonic);
+      }
+      if (type === 'mnemonic') {
+        XMSS_OBJECT = QRLLIB.Xmss.fromMnemonic(this.hexOrMnemonic);
+      }
+      if (type !== null) {
+        thisAddress = XMSS_OBJECT.getAddress();
+        console.log(thisAddress)
+      }
     }
   }
 }
