@@ -259,6 +259,11 @@
             </div>
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>
+            <Bookmark></Bookmark>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-content>
   </ion-page>
@@ -273,6 +278,8 @@ import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API';
 import state from '../store';
+import Bookmark from './Bookmark.vue'
+
 // import { ref, computed, watch } from 'vue';
 
 export default {
@@ -298,7 +305,8 @@ export default {
     IonSpinner,
     IonLabel,
     // IonChip,
-    IonItem
+    IonItem,
+    Bookmark
   },
   data() {
     const route = useRoute()

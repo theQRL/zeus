@@ -21,13 +21,12 @@
               </ion-item>
             </ion-menu-toggle>
           </ion-list>
-          <ion-list id="labels-list">
-            <!-- <ion-list-header>Bookmarks</ion-list-header> -->
-            <ion-item lines="none" class="addr" @click="friend(0)"><ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>Friend</ion-item>
-            <!-- <ion-item v-for="(label, index) in labels" lines="none" :key="index">
+          <ion-list v-if="labels.length > 0" id="labels-list">
+            <ion-list-header>Bookmarks</ion-list-header>
+            <ion-item class="addr" v-for="(label, index) in labels" lines="none" :key="index" router-direction="root" :router-link="label.url">
               <ion-icon slot="start" :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
-              <ion-label>{{ label }}</ion-label>
-            </ion-item> -->
+              <ion-label>{{ label.name }}</ion-label>
+            </ion-item>
           </ion-list>
         </ion-content>
       </ion-menu>
@@ -37,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonSelectOption, IonButton, IonSelect, IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
+import { IonApp, IonSelectOption, IonButton, IonSelect, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { addOutline, addSharp, bookmarkOutline, bookmarkSharp, lockOpenOutline, lockOpenSharp, homeOutline, homeSharp, globeOutline, globeSharp, cogOutline, cogSharp, hardwareChipOutline, hardwareChipSharp, peopleOutline, peopleSharp } from 'ionicons/icons';
@@ -52,7 +51,7 @@ export default defineComponent({
     IonItem, 
     IonLabel, 
     IonList, 
-    // IonListHeader, 
+    IonListHeader, 
     IonMenu, 
     IonMenuToggle, 
     // IonNote, 
@@ -64,6 +63,7 @@ export default defineComponent({
   },
   data () {
     return {
+      labels: state.bookmarks,
       sharedState: state
     }
   },
@@ -73,11 +73,6 @@ export default defineComponent({
         return 'solid';
       }
       return 'outline';
-    },
-    friend(num: number) {
-      console.log(num)
-      const route = '/a/Q010600286a4c7bcc7f701dc7cf0389fd9be402b610894e306aad35078539599398f9681c64e56c'
-      this.router.push(route)
     },
   },
   setup() {
@@ -131,8 +126,8 @@ export default defineComponent({
       //   mdIcon: hardwareChipSharp
       // }
     ];
-    const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-    
+  
+
     const path = window.location.pathname.split('/')[1];
     if (path === 'a' || path === 'explorer' || path === 'block' || path === 'tx') { selectedIndex.value = 1 }
     // const path = window.location.pathname.split('folder/')[1];
@@ -143,7 +138,6 @@ export default defineComponent({
     return { 
       selectedIndex,
       appPages, 
-      labels,
       addOutline, 
       addSharp, 
       bookmarkOutline, 
@@ -164,7 +158,13 @@ export default defineComponent({
       customAlertOptions,
       isSelected: (url: string) => url === route.path ? 'selected' : ''
     }
-  }
+  },
+  watch: {
+    'sharedState.bookmarks': function (oldState, newState) {
+      console.log(`Network changed ${oldState} -> ${newState} -- bookmark changed`);
+      this.labels = this.sharedState.bookmarks
+    }
+  },
 });
 </script>
 
