@@ -93,6 +93,11 @@
             </div>
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>
+            <Bookmark></Bookmark>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-content>
 </ion-page>
@@ -107,6 +112,7 @@ import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
 import API from '../API';
 import state from '../store';
+import Bookmark from './Bookmark.vue'
 // import { ref, computed, watch } from 'vue';
 
 export default {
@@ -132,12 +138,14 @@ export default {
     IonSpinner,
     IonLabel,
     IonIcon,
+    Bookmark,
   },
   data() {
     const route = useRoute()
     return {
       sharedState: state,
       id: route.params.id,
+      path: route.path,
       info: null,
       error: null,
       tx: null,
@@ -216,7 +224,7 @@ export default {
     },
     goBack() {
       const b = parseInt(this.id)
-      if (b > 1) {
+      if (b > 0) {
         const blockNew = (b - 1).toString()
         this.router.push(`/block/${blockNew}`)
         this.id = blockNew

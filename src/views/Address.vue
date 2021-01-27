@@ -92,6 +92,11 @@
             </div>
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>
+            <Bookmark></Bookmark>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-content>
   </ion-page>
@@ -108,6 +113,7 @@ import API from '../API'
 import state from '../store'
 import Tokens from './Tokens.vue'
 import Multisig from './Multisig.vue'
+import Bookmark from './Bookmark.vue'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -133,7 +139,8 @@ export default {
     IonLabel,
     // IonItem,
     Tokens,
-    Multisig
+    Multisig,
+    Bookmark
   },
   data() {
     const route = useRoute()

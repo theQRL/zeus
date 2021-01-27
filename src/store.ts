@@ -6,5 +6,6 @@ export default  {
   //   address: null,
   // },
   network: 'mainnet',
-  qrllib: false
+  qrllib: false,
+  bookmarks: [],
 };
