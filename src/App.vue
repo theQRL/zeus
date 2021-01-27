@@ -40,7 +40,10 @@ import { IonApp, IonSelectOption, IonButton, IonSelect, IonContent, IonIcon, Ion
 import { defineComponent, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { addOutline, addSharp, bookmarkOutline, bookmarkSharp, lockOpenOutline, lockOpenSharp, homeOutline, homeSharp, globeOutline, globeSharp, cogOutline, cogSharp, hardwareChipOutline, hardwareChipSharp, peopleOutline, peopleSharp } from 'ionicons/icons';
+import { Plugins } from '@capacitor/core'
 import state from './store';
+
+const { Storage } = Plugins
 
 export default defineComponent({
   name: 'App',
@@ -74,6 +77,27 @@ export default defineComponent({
       }
       return 'outline';
     },
+  },
+  async created () {
+    const getObject = async function() {
+      const ret = await Storage.get({ key: 'bookmarks' });
+      if (ret.value === null) {
+        console.log('No bookmarks yet...')
+        return []
+      } else {
+        console.log('Bookmarks found... fetching')
+        return JSON.parse(ret.value)
+      }
+    }
+
+    const loadBookmarks = async function() {
+      const bookmarks = await getObject()
+      return bookmarks
+    }
+
+    const bookmarks = await loadBookmarks()
+    this.sharedState.bookmarks = bookmarks
+  
   },
   setup() {
     const router = useRouter()
@@ -161,7 +185,6 @@ export default defineComponent({
   },
   watch: {
     'sharedState.bookmarks': function (oldState, newState) {
-      console.log(`Network changed ${oldState} -> ${newState} -- bookmark changed`);
       this.labels = this.sharedState.bookmarks
     }
   },
