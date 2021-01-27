@@ -25,6 +25,8 @@ import NameBookmark from './NameBookmark.vue'
 import { useRoute } from 'vue-router'
 import { bookmarkSharp, bookmarkOutline, closeCircle } from 'ionicons/icons'
 import state from '../store'
+import { Plugins } from '@capacitor/core'
+const { Storage } = Plugins;
 export default {
   inheritAttrs: false,
   name: 'Bookmark',
@@ -62,7 +64,10 @@ export default {
       console.log('Saved with: ' + params)
       this.name = params
       this.sharedState.bookmarks.push({url: this.$route.path, name: params})
-      console.log(this.sharedState.bookmarks)
+      Storage.set({
+        key: 'bookmarks',
+        value: JSON.stringify(this.sharedState.bookmarks)
+      });
     },
     handleCancel() {
       this.modalIsOpen = false
