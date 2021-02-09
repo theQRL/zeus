@@ -11,7 +11,7 @@ import { IonProgressBar, IonText, IonList } from '@ionic/vue'
 // import { ref, computed, watch } from 'vue';
 
 export default {
-  name: 'Tokens',
+  name: 'Ots',
   components: {
     IonProgressBar, IonText, IonList
   },

@@ -18,10 +18,7 @@
         <ion-row>
           <ion-col style="text-align: center;">
           <div v-if="info !== null">
-            <ion-chip outline color="secondary">
-              <ion-label>Balance</ion-label>
-            </ion-chip>
-            <p>{{ parseInt(info.state.balance) / 10e8 }} Quanta</p>
+            <Balance :balance="parseInt(info.state.balance) / 10e8"></Balance>
             </div>
           </ion-col>
         </ion-row>
@@ -100,7 +97,7 @@
 </template>
 
 <script lang="js">
-import { IonGrid, IonChip, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel } from '@ionic/vue'
+import { IonGrid, IonText, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel } from '@ionic/vue'
 import { useRouter, useRoute } from 'vue-router'
 import { checkmarkCircleOutline } from 'ionicons/icons'
 import validateAddress from '@theqrl/validate-qrl-address'
@@ -112,6 +109,7 @@ import Tokens from './Tokens.vue'
 import Multisig from './Multisig.vue'
 import Bookmark from './Bookmark.vue'
 import Ots from './Ots.vue'
+import Balance from './Balance.vue'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -120,7 +118,6 @@ export default {
   components: {
     IonGrid,
     IonIcon,
-    IonChip,
     IonCol,
     IonRow,
     IonButtons,
@@ -134,12 +131,12 @@ export default {
     IonSpinner,
     IonSegment,
     IonSegmentButton,
-    IonLabel,
     // IonItem,
     Tokens,
     Multisig,
     Bookmark,
-    Ots
+    Ots,
+    Balance
   },
   data() {
     const route = useRoute()
@@ -264,5 +261,8 @@ ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
 }
 #token-list {
   margin-top: 15px;
+}
+#balance {
+  margin-top: 10px;
 }
 </style>
