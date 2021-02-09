@@ -65,7 +65,6 @@ export default {
         return
       }
       console.log('Fetching from: ' + network)
-      console.log('id for tokens is ' + this.id)
       axios
         .post(`${API}/grpc/${network}/GetTokensByAddress`, {
           address: this.id, 
@@ -73,7 +72,6 @@ export default {
           page_number: 1, }, // eslint-disable-line
         )
         .then(response => {
-          console.log(response)
           if (response.data.code === 3) {
             this.error = { message: response.data.details }
           } else {
