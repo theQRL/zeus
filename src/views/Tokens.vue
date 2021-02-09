@@ -1,15 +1,20 @@
 <template>
   <ion-list v-if="info !== null">
-    <ion-list-header color="tertiary"> TOKEN BALANCES </ion-list-header>
-    <ion-item-group v-for="t in info.tokens_detail" :key="t.balance">
-      <ion-item-divider>
-        <ion-label>{{ t.name }}</ion-label>
-      </ion-item-divider>
-      <ion-item lines="none">
-        <ion-label @click="this.router.push(`/tx/${t.token_txhash }`)" class="addr">{{ t.token_txhash }}</ion-label>
-        <ion-note slot="end" color="secondary">{{ t.balance }} {{ t.symbol }}</ion-note>
-      </ion-item>
-    </ion-item-group>
+    <div v-if="info.tokens_detail.length === 0">
+      <ion-list-header color="tertiary"> NO TOKENS HELD </ion-list-header>
+    </div>
+    <div v-if="info.tokens_detail.length > 0">
+      <ion-list-header color="tertiary"> TOKEN BALANCES </ion-list-header>
+      <ion-item-group v-for="t in info.tokens_detail" :key="t.balance">
+        <ion-item-divider>
+          <ion-label>{{ t.name }}</ion-label>
+        </ion-item-divider>
+        <ion-item lines="none">
+          <ion-label @click="this.router.push(`/tx/${t.token_txhash }`)" class="addr">{{ t.token_txhash }}</ion-label>
+          <ion-note slot="end" color="secondary">{{ t.balance }} {{ t.symbol }}</ion-note>
+        </ion-item>
+      </ion-item-group>
+    </div>
   </ion-list>
 </template>
 

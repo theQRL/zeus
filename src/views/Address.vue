@@ -67,10 +67,7 @@
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
                 </div>
                 <div v-if="info !== null">
-                  {{ info.state.address }}
-                  <br />
-                  number of signatures: {{ validate().sig.number }}<br />
-                  used ots keys: {{ info.state.used_ots_key_count }}<br />
+                  <Ots :used="info.state.used_ots_key_count" :total="validate().sig.number"></Ots>
                 </div>
               </div>
               <div v-if="activeSegment === 'tokens'">
@@ -114,6 +111,7 @@ import state from '../store'
 import Tokens from './Tokens.vue'
 import Multisig from './Multisig.vue'
 import Bookmark from './Bookmark.vue'
+import Ots from './Ots.vue'
 
 // import { ref, computed, watch } from 'vue';
 
@@ -140,7 +138,8 @@ export default {
     // IonItem,
     Tokens,
     Multisig,
-    Bookmark
+    Bookmark,
+    Ots
   },
   data() {
     const route = useRoute()
