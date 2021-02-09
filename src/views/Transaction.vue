@@ -259,20 +259,23 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
-            <Bookmark></Bookmark>
-          </ion-col>
-        </ion-row>
       </ion-grid>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="start">
+          <Bookmark></Bookmark>
+        </ion-fab-list>
+      </ion-fab>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="js">
-import { IonGrid, IonCol, IonRow, IonButtons, IonIcon, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonNote, IonList, IonItemGroup, IonItemDivider, IonListHeader, } from '@ionic/vue';
+import { IonFab, IonFabButton, IonFabList, IonGrid, IonCol, IonRow, IonButtons, IonIcon, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonNote, IonList, IonItemGroup, IonItemDivider, IonListHeader, } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
-import { checkmarkCircleOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, bookmarkOutline, bookmarkSharp } from 'ionicons/icons';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
@@ -286,6 +289,9 @@ export default {
   name: 'Transaction',
   components: {
     IonGrid,
+    IonFab,
+    IonFabList,
+    IonFabButton,
     IonCol,
     IonRow,
     IonButtons,
@@ -322,7 +328,7 @@ export default {
   },
   setup() {
     const router = useRouter()
-    return { router, checkmarkCircleOutline };
+    return { router, checkmarkCircleOutline, bookmarkSharp, bookmarkOutline };
   },
   beforeMount() {
     this.apiCall()

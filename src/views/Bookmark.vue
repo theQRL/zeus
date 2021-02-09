@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <ion-chip :outline='isOutline()' :color="isOutline() ? 'secondary' : 'primary'" @click="openModal">
+  <div style="width: max-content;">
+    <ion-chip color="primary" @click="openModal">
       <ion-icon :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
-      <ion-label v-if="isOutline()">Bookmark</ion-label><ion-label v-else>{{name}}</ion-label>
+      <ion-label v-if="isOutline()">Create</ion-label><ion-label v-else>{{name}}</ion-label>
       <ion-icon v-if="!isOutline()" :ios="closeCircle" :md="closeCircle"></ion-icon>
     </ion-chip>
   </div>
@@ -107,3 +107,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  ion-chip {
+    background: black;
+  }
+</style>

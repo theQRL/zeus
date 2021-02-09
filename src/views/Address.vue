@@ -18,10 +18,7 @@
         <ion-row>
           <ion-col style="text-align: center;">
           <div v-if="info !== null">
-            <ion-chip outline color="secondary">
-              <ion-label>Balance</ion-label>
-            </ion-chip>
-            <p>{{ parseInt(info.state.balance) / 10e8 }} Quanta</p>
+            <Balance :balance="parseInt(info.state.balance) / 10e8"></Balance>
             </div>
           </ion-col>
         </ion-row>
@@ -47,19 +44,36 @@
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
                 </div>
                 <div class="mid-container" v-if="info !== null">
-                  {{ info.state.address }}
-                  <br />
-                  balance {{ parseInt(info.state.balance) / 10e8 }} Quanta<br />
-                  valid address: {{ validate().result }}<br />
-                  signature type: {{ validate().sig.type }}<br />
-                  number of signatures: {{ validate().sig.number }}<br />
-                  hash function: {{ validate().hash.function }}<br />
-                  transactions: {{ info.state.transaction_hash_count }}<br />
-                  tokens: {{ info.state.tokens_count }}<br />
-                  slaves: {{ info.state.slaves_count }}<br />
-                  nonce: {{ info.state.nonce }}<br />
-                  used ots keys: {{ info.state.used_ots_key_count }}<br />
-                  lattice keys: {{ info.state.lattice_pk_count }}
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label> TRANSACTIONS </ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label>
+                        {{ info.state.transaction_hash_count }}
+                      </ion-label>
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label> SIGNATURE TYPE </ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label>
+                        {{ validate().sig.type }}
+                      </ion-label>
+                    </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                    <ion-item-divider>
+                      <ion-label> HASH FUNCTION </ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label>
+                        {{ validate().hash.function }}
+                      </ion-label>
+                    </ion-item>
+                  </ion-item-group>
                 </div>
               </div>
               <div v-if="activeSegment === 'ots'">
@@ -67,10 +81,7 @@
                   <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
                 </div>
                 <div v-if="info !== null">
-                  {{ info.state.address }}
-                  <br />
-                  number of signatures: {{ validate().sig.number }}<br />
-                  used ots keys: {{ info.state.used_ots_key_count }}<br />
+                  <Ots :used="info.state.used_ots_key_count" :total="validate().sig.number"></Ots>
                 </div>
               </div>
               <div v-if="activeSegment === 'tokens'">
@@ -92,20 +103,23 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
-            <Bookmark></Bookmark>
-          </ion-col>
-        </ion-row>
       </ion-grid>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="start">
+          <Bookmark></Bookmark>
+        </ion-fab-list>
+      </ion-fab>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="js">
-import { IonGrid, IonChip, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel } from '@ionic/vue'
+import { IonFab, IonFabList, IonLabel, IonItem, IonItemGroup, IonItemDivider, IonFabButton, IonGrid, IonIcon, IonCol, IonRow, IonSegment, IonSegmentButton, IonButtons, IonSpinner, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
 import { useRouter, useRoute } from 'vue-router'
-import { checkmarkCircleOutline } from 'ionicons/icons'
+import { checkmarkCircleOutline, bookmarkOutline, bookmarkSharp } from 'ionicons/icons'
 import validateAddress from '@theqrl/validate-qrl-address'
 import axios from 'axios'
 import helpers from '@theqrl/explorer-helpers'
@@ -114,18 +128,26 @@ import state from '../store'
 import Tokens from './Tokens.vue'
 import Multisig from './Multisig.vue'
 import Bookmark from './Bookmark.vue'
+import Ots from './Ots.vue'
+import Balance from './Balance.vue'
 
 // import { ref, computed, watch } from 'vue';
 
 export default {
   name: 'Address',
   components: {
+    IonFab,
+    IonFabList,
+    IonFabButton,
     IonGrid,
     IonIcon,
-    IonChip,
     IonCol,
     IonRow,
     IonButtons,
+    IonLabel,
+    IonItem,
+    IonItemDivider,
+    IonItemGroup,
     // IonButton,
     IonContent,
     IonHeader,
@@ -136,11 +158,12 @@ export default {
     IonSpinner,
     IonSegment,
     IonSegmentButton,
-    IonLabel,
     // IonItem,
     Tokens,
     Multisig,
-    Bookmark
+    Bookmark,
+    Ots,
+    Balance
   },
   data() {
     const route = useRoute()
@@ -157,7 +180,7 @@ export default {
   },
   setup() {
     const router = useRouter()
-    return { router, checkmarkCircleOutline };
+    return { router, checkmarkCircleOutline, bookmarkOutline, bookmarkSharp };
   },
   methods: {
     explorer() {
@@ -265,5 +288,8 @@ ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
 }
 #token-list {
   margin-top: 15px;
+}
+#balance {
+  margin-top: 10px;
 }
 </style>

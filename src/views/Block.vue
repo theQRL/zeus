@@ -93,20 +93,23 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
-            <Bookmark></Bookmark>
-          </ion-col>
-        </ion-row>
       </ion-grid>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="start">
+          <Bookmark></Bookmark>
+        </ion-fab-list>
+      </ion-fab>
     </ion-content>
 </ion-page>
 </template>
 
 <script lang="js">
-import { IonGrid, IonList, IonItemGroup, IonListHeader, IonItemDivider, IonNote, IonCol, IonRow, IonIcon, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonFab, IonFabButton, IonFabList, IonGrid, IonList, IonItemGroup, IonListHeader, IonItemDivider, IonNote, IonCol, IonRow, IonIcon, IonButtons, IonButton, IonSpinner, IonLabel, IonItem, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
-import { chevronForwardOutline, chevronBackOutline, checkmarkCircleOutline, ellipsisHorizontalOutline } from 'ionicons/icons';
+import { chevronForwardOutline, chevronBackOutline, checkmarkCircleOutline, ellipsisHorizontalOutline, bookmarkOutline, bookmarkSharp } from 'ionicons/icons';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import helpers from '@theqrl/explorer-helpers'
@@ -118,6 +121,9 @@ import Bookmark from './Bookmark.vue'
 export default {
   name: 'Block',
   components: {
+    IonFab,
+    IonFabButton,
+    IonFabList,
     IonGrid,
     IonList,
     IonListHeader,
@@ -157,7 +163,7 @@ export default {
   },
   setup() {
     const router = useRouter()
-    return { router, chevronBackOutline, chevronForwardOutline, checkmarkCircleOutline, ellipsisHorizontalOutline };
+    return { router, chevronBackOutline, chevronForwardOutline, checkmarkCircleOutline, ellipsisHorizontalOutline, bookmarkSharp, bookmarkOutline };
   },
   beforeMount() {
     this.apiCall()
