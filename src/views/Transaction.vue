@@ -65,6 +65,16 @@
                       >
                     </ion-item>
                   </ion-item-group>
+                  <ion-item-group v-if="(info.transaction.tx.transfer.message_data)">
+                    <ion-item-divider>
+                      <ion-label>MESSAGE</ion-label>
+                    </ion-item-divider>
+                    <ion-item lines="none">
+                      <ion-label>
+                        {{ info.transaction.tx.transfer.message_data }}
+                      </ion-label>
+                    </ion-item>
+                  </ion-item-group>
                 </ion-list>
                 <!-- TRANSFER end -->
 
