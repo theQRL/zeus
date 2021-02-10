@@ -289,7 +289,4 @@ ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
 #token-list {
   margin-top: 15px;
 }
-#balance {
-  margin-top: 10px;
-}
 </style>

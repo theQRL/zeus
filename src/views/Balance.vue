@@ -24,5 +24,7 @@ export default {
 }
 </script>
 <style scoped>
-
+#balance {
+  margin-top: 10px;
+}
 </style>
