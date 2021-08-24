@@ -37,7 +37,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/open/:type?',
     component: () => import ('../views/Open.vue')
-  }
+  },
+  {
+    path: '/wallet/:id',
+    component: () => import ('../views/Wallet.vue')
+  },
 ]
 
 const router = createRouter({

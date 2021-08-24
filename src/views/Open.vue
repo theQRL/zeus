@@ -10,7 +10,11 @@
     </ion-header>
 
     <ion-content>
-      <div id="container">
+      <div class="mid-container" v-if="loadingXMSS">
+        <h3>Opening wallet<br><small>Please wait...</small></h3>
+        <ion-spinner class="ion-text-center" color="secondary"></ion-spinner>
+      </div>
+      <div id="container" v-if="!loadingXMSS">
         <ion-grid v-if="type === null">
           <ion-toolbar>
             <ion-segment v-model="activeSegment" value="hexseed" color="secondary">
@@ -49,8 +53,8 @@
 
 <script lang="js">
 /* global QRLLIB */
-import { IonSegment, IonSegmentButton, IonItem, IonRow, IonCol, IonLabel, IonInput, IonButtons, IonButton, IonGrid, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { useRoute } from 'vue-router';
+import { IonSegment, IonSpinner, IonSegmentButton, IonItem, IonRow, IonCol, IonLabel, IonInput, IonButtons, IonButton, IonGrid, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { useRoute, useRouter } from 'vue-router';
 export default {
   name: 'New',
   components: {
@@ -70,6 +74,11 @@ export default {
     IonInput,
     IonTitle,
     IonToolbar,
+    IonSpinner,
+  },
+  setup() {
+    const router = useRouter()
+    return { router }
   },
   data() {
     const route = useRoute()
@@ -88,10 +97,16 @@ export default {
       result: null,
       hexOrMnemonic: null,
       error: null,
+      loadingXMSS: false,
     }
   },
   methods: {
-    openWallet() {
+    delay(ms) {
+      return new Promise((res) => {
+        setTimeout(res, ms);
+      });
+    },
+    openWallet: async function () {
       console.log('Open wallet clicked')
       console.log(this.hexOrMnemonic)
       let type = null
@@ -107,6 +122,11 @@ export default {
         this.error = 'Invalid hexseed/mnemonic: please check carefully'
         return
       }
+      this.loadingXMSS = true;
+      await this.delay(100);
+      await this.$nextTick();
+      await this.delay(100);
+      await this.$nextTick();
       if (type === 'hexseed') {
         XMSS_OBJECT = QRLLIB.Xmss.fromHexSeed(this.hexOrMnemonic);
       }
@@ -115,7 +135,10 @@ export default {
       }
       if (type !== null) {
         thisAddress = XMSS_OBJECT.getAddress();
-        console.log(thisAddress)
+        console.log(thisAddress);
+        this.router.push(`/wallet/${thisAddress}`);
+        this.hexOrMnemonic = "";
+        this.loadingXMSS = false;
       }
     }
   }
@@ -143,5 +166,14 @@ ion-segment-button.md:hover:not(.segment-button-checked) {
 }
 ion-segment-button.md:hover:not(.segment-button-checked)::part(native) {
   color: #fff;
+}
+.mid-container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  transform: translateY(50%);
 }
 </style>
