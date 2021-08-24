@@ -8,4 +8,5 @@ export default  {
   network: 'mainnet',
   qrllib: false,
   bookmarks: [],
+  xmss: null,
 };
